@@ -7,13 +7,12 @@ import ReactDOM from 'react-dom/client';
 
 import App from './app';
 // eslint-disable-next-line import/extensions
-// import initLocalization from '../i18n';
+import initLocalization from './shared/i18n';
 // // import reportWebVitals from './reportWebVitals';
 
-// initLocalization();
+initLocalization();
 
 const rootNode: HTMLElement | null = document.getElementById('root');
-
 if (rootNode) {
 	const root: ReactDOM.Root = ReactDOM.createRoot(rootNode);
 	root.render(

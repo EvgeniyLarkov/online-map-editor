@@ -1,3 +1,7 @@
+:root {
+    --map-overlay-menu-z: 500;
+}
+
 *,
 *::before,
 *::after {
