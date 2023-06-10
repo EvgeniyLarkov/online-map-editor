@@ -1,0 +1,35 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+
+    font-family: "Poppins", sans-serif;
+}
+
+@media screen and (min-width: 900px) {
+    html {
+        font-size: 75%;
+    }
+}
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+}
