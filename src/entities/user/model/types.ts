@@ -1,15 +1,17 @@
+import { WithNull } from 'shared/types';
+
 type UserEmail = string;
 export type UserHash = string;
 
-export enum UserRoles {
-	'User' = 'User',
-	'Admin' = 'Admin',
-}
+export const UserRoles = {
+	User: 'User',
+	Admin: 'Admin',
+};
 
-export enum UserStatus {
-	'Inactive' = 'Inactive',
-	'Active' = 'Active',
-}
+export const UserStatus = {
+	Inactive: 'Inactive',
+	Active: 'Active',
+};
 
 export type UserDto = {
 	id: number;
@@ -26,10 +28,12 @@ export type UserDto = {
 	isOnline?: boolean;
 	role: {
 		id: number;
-		name: UserRoles;
+		name: keyof typeof UserRoles;
 	};
 	status: {
 		id: number;
-		name: UserStatus;
+		name: keyof typeof UserStatus;
 	};
 };
+
+export type UserStoreInterface = WithNull<UserDto>;

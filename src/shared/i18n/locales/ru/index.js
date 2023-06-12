@@ -49,6 +49,9 @@ const translation = {
 				'secondName-empty': 'Введите Вашу фамилию',
 			},
 		},
+		menu: {
+			logout: 'Выйти',
+		},
 		chat,
 		profile,
 	},

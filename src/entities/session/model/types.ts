@@ -1,7 +1,11 @@
-export type SessionState = {
+export type SessionType = {
 	isAuthorized: boolean;
 	accessToken: null | string;
 	userHash: null | string;
-	setSessionData: (data: Omit<SessionState, 'setSessionData'>) => void;
+};
+
+export type SessionState = SessionType & {
+	setSessionData: (data: SessionType) => void;
+	clear: () => void;
 	// login: (data: LoginRequestDto) => Promise<UserDto | null>;
 };

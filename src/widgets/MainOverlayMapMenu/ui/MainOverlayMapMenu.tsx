@@ -1,13 +1,21 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { useSession } from 'entities/session';
+import { useUserStore } from 'entities/user';
 import { LoginForm } from 'features/authentication/login';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BaseModal } from 'shared/uikit';
+import { HeaderUserActionsMenu } from './OverlayUserActionsMenu';
 
 export function MainOverlayMapMenu() {
 	const { t } = useTranslation();
 
 	const [modalOpen, setModalOpen] = useState(false);
+	const { firstName, lastName } = useUserStore((user) => ({
+		firstName: user.firstName,
+		lastName: user.lastName,
+	}));
+	const hasSession = useSession((session) => session.isAuthorized);
 
 	const onLoginClick = () => {
 		setModalOpen(true);
@@ -37,9 +45,18 @@ export function MainOverlayMapMenu() {
 				shadow="dark-lg"
 				sx={{ 'z-index': 'var(--map-overlay-menu-z)' }}
 			>
-				<Button colorScheme="messenger" onClick={onLoginClick}>
-					{t('login.login')}
-				</Button>
+				{hasSession ? (
+					<Flex gap={4} alignItems="center">
+						<Text>
+							{t('header.greeting')} {firstName} {lastName}
+						</Text>
+						<HeaderUserActionsMenu />
+					</Flex>
+				) : (
+					<Button colorScheme="messenger" onClick={onLoginClick}>
+						{t('header.login')}
+					</Button>
+				)}
 			</Box>
 			<BaseModal
 				header={t('login.login')}

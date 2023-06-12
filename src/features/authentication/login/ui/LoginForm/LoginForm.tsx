@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { UnsuccssesRequest } from 'shared/api/types';
 import { useSession } from 'entities/session';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 import { FieldInput } from 'shared/uikit';
+import { useUserStore } from 'entities/user';
 import { makeLogin } from '../../model/login';
 import { validationShema } from '../../model/loginFormSchema';
 
@@ -23,10 +24,11 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 
 	const initialValues: FormValues = { email: '', password: '' };
 	const setSessionData = useSession((session) => session.setSessionData);
+	const setUserData = useUserStore((user) => user.update);
 
 	const handleSetServerError = (
 		result: UnsuccssesRequest,
-		formikHelpers: FormikHelpers<any>
+		formikHelpers: FormikHelpers<FormValues>
 	): void => {
 		if (result.data?.errors?.email === 'emailNotExists') {
 			formikHelpers.setErrors({
@@ -41,12 +43,12 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 
 	const handleSubmit = (
 		values: FormValues,
-		formikHelpers: FormikHelpers<any>
+		formikHelpers: FormikHelpers<FormValues>
 	) => {
 		setLoginPending(true);
 
 		makeLogin({
-			login: values.email,
+			email: values.email,
 			password: values.password,
 		})
 			.then((result) => {
@@ -54,6 +56,7 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 
 				if (result.user) {
 					successCallback();
+					setUserData(result.user);
 				} else {
 					handleSetServerError(result, formikHelpers);
 				}

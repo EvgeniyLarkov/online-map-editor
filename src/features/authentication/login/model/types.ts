@@ -1,7 +1,7 @@
 import { UserDto } from 'entities/user/model/types';
 
 export type LoginRequestDto = {
-	login: string;
+	email: string;
 	password: string;
 };
 
