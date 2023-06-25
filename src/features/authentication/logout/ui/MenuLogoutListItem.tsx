@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem, MenuList } from '@chakra-ui/react';
+import { MenuItem } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useSession } from 'entities/session';
 import { useUserStore } from 'entities/user';
@@ -15,9 +15,5 @@ export function MenuLogoutListItem() {
 		dropUserSession();
 	};
 
-	return (
-		<MenuList>
-			<MenuItem onClick={handleLogoutUser}>{t('menu.logout')}</MenuItem>
-		</MenuList>
-	);
+	return <MenuItem onClick={handleLogoutUser}>{t('menu.logout')}</MenuItem>;
 }

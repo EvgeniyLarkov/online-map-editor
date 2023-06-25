@@ -11,6 +11,10 @@ export type EndpointObject = {
 	method: string;
 };
 
+export type RequestAdditionalOptions = {
+	abortController?: AbortController;
+};
+
 export type WsEndpointObject = {
 	url: () => string;
 	namespace: WsNamespaces;

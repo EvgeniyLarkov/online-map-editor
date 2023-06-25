@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { UserDto, UserStoreInterface } from './types';
+import { UserDto } from 'shared/types/user';
+import { UserStoreInterface } from './types';
 
 const userStorageName = 'user-storage';
 

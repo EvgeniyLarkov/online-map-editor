@@ -1,6 +1,8 @@
+import '../shared/libs/wdyr';
+
 import { useSession } from 'entities/session';
 import { router } from 'pages';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouterProvider } from 'react-router';
 import { useSockets } from 'shared/api/transport';
 

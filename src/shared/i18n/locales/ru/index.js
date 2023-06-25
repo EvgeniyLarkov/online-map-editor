@@ -51,6 +51,27 @@ const translation = {
 		},
 		menu: {
 			logout: 'Выйти',
+			mapsList: 'Мои карты',
+			mapCreate: 'Создать карту',
+		},
+		maps: {
+			list: {
+				header: 'Мои карты',
+			},
+			listItem: {
+				creationdate: 'Дата создания',
+				author: 'Автор',
+			},
+			create: {
+				header: 'Новая карта',
+				name: 'Название',
+				description: 'Описание',
+				public: 'Публичная карта',
+				save: 'Создать',
+				errors: {
+					'name-maxlength': 'Максимальная длина имени карты - 100 символов',
+				},
+			},
 		},
 		chat,
 		profile,

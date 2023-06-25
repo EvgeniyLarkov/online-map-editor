@@ -5,6 +5,10 @@ const MapPage = lazy(() => import('./map'));
 
 export const router = createBrowserRouter([
 	{
+		path: '/map/:hash',
+		element: <MapPage />,
+	},
+	{
 		path: '/',
 		element: <MapPage />,
 	},

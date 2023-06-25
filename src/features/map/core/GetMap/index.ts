@@ -1,0 +1,1 @@
+export { getMapByHash } from './model';

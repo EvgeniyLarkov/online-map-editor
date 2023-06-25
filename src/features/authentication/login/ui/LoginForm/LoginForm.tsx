@@ -6,6 +6,7 @@ import { useSession } from 'entities/session';
 import { Button, Flex } from '@chakra-ui/react';
 import { FieldInput } from 'shared/uikit';
 import { useUserStore } from 'entities/user';
+import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { makeLogin } from '../../model/login';
 import { validationShema } from '../../model/loginFormSchema';
 
@@ -54,7 +55,7 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 			.then((result) => {
 				setSessionData(result.session);
 
-				if (result.user) {
+				if (isSuccessRequest(result)) {
 					successCallback();
 					setUserData(result.user);
 				} else {

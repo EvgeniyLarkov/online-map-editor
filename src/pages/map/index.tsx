@@ -1,23 +1,16 @@
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useParams } from 'react-router';
 import { MainOverlayMapMenu } from 'widgets/MainOverlayMapMenu';
+import { MapCore } from 'widgets/MapCore';
 
 function MapPage() {
+	const params = useParams();
+
 	return (
 		<>
 			<MainOverlayMapMenu />
-			<MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom id="map">
-				<TileLayer
-					attribution="Aboba 123"
-					url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-				/>
-				<Marker position={[51.505, -0.09]}>
-					<Popup>
-						A pretty CSS3 popup. <br /> Easily customizable.
-					</Popup>
-				</Marker>
-			</MapContainer>
+			<MapCore hash={params.hash} />
 		</>
 	);
 }
