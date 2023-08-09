@@ -1,5 +1,5 @@
 import { useSockets } from 'shared/api/transport';
-import { MapEventDto, mapsEventNames } from '../types/map.types';
+import { MapEventDto, mapsActionNames } from '../types/map.types';
 
 export const useEmit = () => {
 	const { send } = useSockets(({ emit }) => ({
@@ -7,7 +7,7 @@ export const useEmit = () => {
 	}));
 
 	return (
-		eventName: mapsEventNames,
+		eventName: mapsActionNames,
 		mapHash: string,
 		eventData?: Omit<MapEventDto, 'mapHash'>
 	) => {

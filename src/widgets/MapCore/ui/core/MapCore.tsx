@@ -7,7 +7,9 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { useEmit } from 'widgets/MapCore/api';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
-import { EventController } from './EventController';
+import { EventDispatchController } from './EventDispatchController';
+import { useEventRecieveController } from './EventRecieveController';
+import { MapActionsRenderer } from './MapActionsRenderer';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());
@@ -47,6 +49,9 @@ export function MapCore({ hash }: { hash: string | undefined }) {
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
 	const [initialLoading, setInitialLoading] = React.useState(true);
 	const sendEvent = useEmit();
+
+	// Handles Recieving events via websockets
+	useEventRecieveController();
 
 	const mapInitialCoordinates = React.useMemo(
 		() => [59.8676, 30.7755] as LatLngTuple,
@@ -92,7 +97,7 @@ export function MapCore({ hash }: { hash: string | undefined }) {
 					{mapRef ? (
 						<>
 							<DisplayPosition map={mapRef} />
-							<EventController map={mapRef} />
+							<EventDispatchController map={mapRef} />
 						</>
 					) : null}
 					<MapContainer
@@ -103,6 +108,7 @@ export function MapCore({ hash }: { hash: string | undefined }) {
 						ref={setMapRef}
 					>
 						<TileLayer attribution={mapName || ''} url={mapInitialTileLayer} />
+						<MapActionsRenderer />
 					</MapContainer>
 				</div>
 			)}

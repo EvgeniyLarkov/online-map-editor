@@ -1,13 +1,11 @@
 import { useMapStore } from 'entities/map';
+import { MAP_ACTION_TYPES } from 'entities/map-actions';
 import { Map } from 'leaflet';
 import React from 'react';
 import { useEmit } from 'widgets/MapCore/api';
-import {
-	MAP_ACTION_TYPES,
-	MAP_EVENTS,
-} from 'widgets/MapCore/api/types/map.types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
 
-export function EventController({ map }: { map: Map }) {
+export function EventDispatchController({ map }: { map: Map }) {
 	const { mapHash } = useMapStore((mapData) => ({
 		mapHash: mapData.hash,
 	}));
@@ -23,7 +21,7 @@ export function EventController({ map }: { map: Map }) {
 
 			if (true) {
 				// TO-DO handling multiple events
-				sendEvent(MAP_EVENTS.new_event, mapHash, {
+				sendEvent(MAP_EVENTS.new_action, mapHash, {
 					type: MAP_ACTION_TYPES.marker,
 					coordinates,
 				});
