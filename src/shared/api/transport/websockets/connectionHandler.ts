@@ -2,14 +2,15 @@ import { io, Socket } from 'socket.io-client';
 
 import { create } from 'zustand';
 import { serverHost, serverPort } from 'shared/api/config';
-import { useSocketStore } from './types';
+import { SOCKET_NAMESPACES, useSocketStore } from './types';
 
 export const useSockets = create<useSocketStore>((set, get) => ({
 	io: null,
 	connecting: false,
-	handleConnect: async (getToken: () => string) => {
+	namespace: null,
+	handleConnect: async (getToken, namespace = SOCKET_NAMESPACES.map) => {
 		const connection = io(
-			`http://${serverHost}:${serverPort}/chat`, // TO-DO peredelat
+			`http://${serverHost}:${serverPort}/${namespace}`, // TO-DO peredelat
 			{
 				extraHeaders: {
 					Authorization: `Bearer ${getToken()}`,
@@ -22,12 +23,12 @@ export const useSockets = create<useSocketStore>((set, get) => ({
 		console.log(`Connecting to socket server ${serverHost}:${serverPort} ⌛`);
 
 		connection.on('connect', () => {
-			set(() => ({ io: connection, connecting: false }));
+			set(() => ({ io: connection, connecting: false, namespace }));
 			console.log(`Connected to socket server ${serverHost}:${serverPort} 🟢`);
 		});
 
 		connection.on('disconnect', () => {
-			set(() => ({ io: null, connecting: false }));
+			set(() => ({ io: null, connecting: false, namespace: null }));
 			console.log(
 				`Disconnected from socket server ${serverHost}:${serverPort} ⛔`
 			);
@@ -50,7 +51,7 @@ export const useSockets = create<useSocketStore>((set, get) => ({
 
 		console.log(
 			'emit to namespasce: ',
-			'chat',
+			get().namespace,
 			' event: ',
 			event,
 			'data:',

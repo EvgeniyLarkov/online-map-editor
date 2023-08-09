@@ -24,8 +24,6 @@ export const makeQuery = async function makeQuery<T, Res>(
 	const token = JSON.parse(localStorage.getItem('session-store') || '').state
 		?.accessToken;
 
-	console.log(options, data);
-
 	const axiosOptions: AxiosRequestConfig<any> = {
 		method: endpoint.method,
 		url: getUrl(routeText),

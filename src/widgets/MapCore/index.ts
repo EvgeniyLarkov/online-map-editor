@@ -1,1 +1,1 @@
-export { MapCore } from './ui/MapCore';
+export { MapCore } from './ui/core/MapCore';
