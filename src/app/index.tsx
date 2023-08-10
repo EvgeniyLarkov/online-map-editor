@@ -1,10 +1,9 @@
-import '../shared/libs/wdyr';
-
 import { useSession } from 'entities/session';
 import { router } from 'pages';
 import React from 'react';
 import { RouterProvider } from 'react-router';
 import { useSockets } from 'shared/api/transport';
+import { SOCKET_NAMESPACES } from 'shared/api/transport/websockets/types';
 
 function App() {
 	const { isAuthorized, key } = useSession((session) => ({
@@ -27,7 +26,8 @@ function App() {
 	const getToken = () => key || '';
 
 	if (isAuthorized) {
-		if (!socketConnecting && !isConnected()) handleConnectToSockets(getToken);
+		if (!socketConnecting && !isConnected())
+			handleConnectToSockets(getToken, SOCKET_NAMESPACES.map);
 	} else {
 		handleDisconnect();
 	}
