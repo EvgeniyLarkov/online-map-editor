@@ -2,6 +2,7 @@ import { shallow } from 'zustand/shallow';
 import { useMapActionsStore } from 'entities/map-actions';
 import React from 'react';
 import { GetMapActionByType } from '../mapActions/getMapActionByType';
+import { ActionMenu } from '../mapActions';
 
 export function MapActionsRenderer() {
 	const { actionsList, actionsByHash } = useMapActionsStore(
@@ -19,7 +20,9 @@ export function MapActionsRenderer() {
 				const ActionElement = GetMapActionByType(action);
 
 				return ActionElement ? (
-					<ActionElement action={action} key={actionHash} />
+					<ActionElement action={action} key={actionHash}>
+						<ActionMenu action={action} />
+					</ActionElement>
 				) : null;
 			})}
 		</>

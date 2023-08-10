@@ -1,15 +1,17 @@
+/* eslint-disable prefer-const */
 import { Box } from '@chakra-ui/react';
 import { useMapStore } from 'entities/map';
 import { getMapByHash } from 'features/map/core/GetMap';
-import { LatLng, LatLngTuple, Map } from 'leaflet';
+import { LatLngTuple, Map } from 'leaflet';
 import React from 'react';
-import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { useEmit } from 'widgets/MapCore/api';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
 import { EventDispatchController } from './EventDispatchController';
 import { useEventRecieveController } from './EventRecieveController';
 import { MapActionsRenderer } from './MapActionsRenderer';
+import { OverlayMapLayout } from '../OverlayMapMenu';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());
@@ -45,7 +47,7 @@ function DisplayPosition({ map }: { map: Map }) {
 	);
 }
 
-export function MapCore({ hash }: { hash: string | undefined }) {
+function MapCorePure({ hash }: { hash: string | undefined }) {
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
 	const [initialLoading, setInitialLoading] = React.useState(true);
 	const sendEvent = useEmit();
@@ -53,13 +55,12 @@ export function MapCore({ hash }: { hash: string | undefined }) {
 	// Handles Recieving events via websockets
 	useEventRecieveController();
 
-	const mapInitialCoordinates = React.useMemo(
+	let mapInitialCoordinates = React.useMemo(
 		() => [59.8676, 30.7755] as LatLngTuple,
 		[]
 	);
-	const mapInitialZoomFactor = 10;
-	const mapInitialTileLayer =
-		'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+	let mapInitialZoomFactor = 14;
+	let mapInitialTileLayer = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 
 	// Initialize store
 	const { setMapData, mapName } = useMapStore((mapData) => ({
@@ -86,32 +87,39 @@ export function MapCore({ hash }: { hash: string | undefined }) {
 		if (hash) {
 			sendEvent(MAP_EVENTS.join_map, hash);
 		}
-	}, [hash, setMapData]);
+
+		return () => {
+			if (hash) {
+				sendEvent(MAP_EVENTS.leave_map, hash);
+			}
+		};
+	}, [hash, sendEvent]);
 
 	return (
-		<div>
+		<>
 			{initialLoading ? (
 				<div>intial loading</div> // TO-DO
-			) : (
-				<div>
-					{mapRef ? (
-						<>
-							<DisplayPosition map={mapRef} />
-							<EventDispatchController map={mapRef} />
-						</>
-					) : null}
-					<MapContainer
-						center={mapInitialCoordinates}
-						zoom={mapInitialZoomFactor}
-						id="map"
-						scrollWheelZoom
-						ref={setMapRef}
-					>
-						<TileLayer attribution={mapName || ''} url={mapInitialTileLayer} />
-						<MapActionsRenderer />
-					</MapContainer>
-				</div>
-			)}
-		</div>
+			) : null}
+			{mapRef ? (
+				<>
+					<DisplayPosition map={mapRef} />
+					<EventDispatchController map={mapRef} />
+				</>
+			) : null}
+			<OverlayMapLayout />
+			<MapContainer
+				center={mapInitialCoordinates}
+				zoom={mapInitialZoomFactor}
+				id="map"
+				scrollWheelZoom
+				ref={setMapRef}
+			>
+				<TileLayer attribution={mapName || ''} url={mapInitialTileLayer} />
+				<MapActionsRenderer />
+			</MapContainer>
+		</>
 	);
 }
+
+MapCorePure.whyDidYouRender = true;
+export const MapCore = React.memo(MapCorePure);

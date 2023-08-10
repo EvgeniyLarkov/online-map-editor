@@ -6,9 +6,10 @@ import { useSockets } from 'shared/api/transport';
 import { MapAction } from 'entities/map-actions/model/types';
 
 export function useEventRecieveController() {
-	const { addActions } = useMapActionsStore(
+	const { addActions, dropActions } = useMapActionsStore(
 		(state) => ({
 			addActions: state.add,
+			dropActions: state.drop,
 		}),
 		shallow
 	);
@@ -22,14 +23,21 @@ export function useEventRecieveController() {
 
 	React.useEffect(() => {
 		const onGetActionsListener = (data: MapAction[]) => {
-			console.log(data);
 			addActions(data);
 		};
 
+		const onDropActionsListender = (data: MapAction[]) => {
+			dropActions(data);
+		};
+
 		io?.on(MAP_EVENTS.get_actions, onGetActionsListener);
+		io?.on(MAP_EVENTS.new_action, onGetActionsListener);
+		io?.on(MAP_EVENTS.drop_action, onDropActionsListender);
 
 		return () => {
 			io?.off(MAP_EVENTS.get_actions, onGetActionsListener);
+			io?.off(MAP_EVENTS.new_action, onGetActionsListener);
+			io?.off(MAP_EVENTS.drop_action, onDropActionsListender);
 		};
 	}, [io]);
 }

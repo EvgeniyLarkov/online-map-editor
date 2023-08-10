@@ -30,6 +30,7 @@ export type MapAction = {
 
 type MapActionsStoreActions = {
 	add: (data: MapAction | MapAction[]) => void;
+	drop: (data: MapAction | MapAction[]) => void;
 };
 
 type MapActionsStoreVariables = {

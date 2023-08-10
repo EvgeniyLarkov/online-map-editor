@@ -12,15 +12,10 @@ type returnActionNodeFunctionType = (
 export function GetMapActionByType(action: MapAction) {
 	const { type } = action;
 
-	const actionsByType = React.useMemo<
-		Record<mapActionTypes, returnActionNodeFunctionType>
-	>(
-		() => ({
-			[MAP_ACTION_TYPES.marker]: LocationMarker,
-			[MAP_ACTION_TYPES.initial_position]: LocationMarker,
-		}),
-		[]
-	);
+	const actionsByType = {
+		[MAP_ACTION_TYPES.marker]: LocationMarker,
+		[MAP_ACTION_TYPES.initial_position]: LocationMarker,
+	};
 
 	return actionsByType[type] ? actionsByType[type] : null;
 }

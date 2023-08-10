@@ -72,7 +72,20 @@ const translation = {
 					'name-maxlength': 'Максимальная длина имени карты - 100 символов',
 				},
 			},
+			actions: {
+				names: {
+					1: 'Маркер',
+				},
+				tips: {
+					drop: 'Удалить',
+					edit: 'Редактировать',
+					submit: 'Сохранить',
+				},
+				description: 'Комментарий',
+				description_placeholder: 'Добавьте описание',
+			},
 		},
+
 		chat,
 		profile,
 	},
