@@ -39,3 +39,7 @@ type MapActionsStoreVariables = {
 };
 
 export type MapActionsStore = MapActionsStoreVariables & MapActionsStoreActions;
+
+export const MAP_ACTION_DRAGGABLES = {
+	[MAP_ACTION_TYPES.marker]: true,
+} as const;

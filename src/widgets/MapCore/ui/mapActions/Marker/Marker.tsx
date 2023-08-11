@@ -7,8 +7,11 @@ export function LocationMarker({
 	action,
 	children,
 	...rest
-}: { action: MapAction } & React.PropsWithChildren &
+}: {
+	action: MapAction;
+} & React.PropsWithChildren &
 	Omit<MarkerProps, 'position'>) {
+	// TO-DO refactor types
 	const latlng = [action.lat, action.lng];
 
 	return isLatLng(latlng) ? (

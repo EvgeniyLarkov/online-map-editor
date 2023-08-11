@@ -33,11 +33,13 @@ export function useEventRecieveController() {
 		io?.on(MAP_EVENTS.get_actions, onGetActionsListener);
 		io?.on(MAP_EVENTS.new_action, onGetActionsListener);
 		io?.on(MAP_EVENTS.drop_action, onDropActionsListender);
+		io?.on(MAP_EVENTS.change_action, onGetActionsListener);
 
 		return () => {
 			io?.off(MAP_EVENTS.get_actions, onGetActionsListener);
 			io?.off(MAP_EVENTS.new_action, onGetActionsListener);
 			io?.off(MAP_EVENTS.drop_action, onDropActionsListender);
+			io?.off(MAP_EVENTS.change_action, onGetActionsListener);
 		};
 	}, [io]);
 }
