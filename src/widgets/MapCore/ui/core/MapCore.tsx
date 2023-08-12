@@ -12,6 +12,7 @@ import { EventDispatchController } from './EventDispatchController';
 import { useEventRecieveController } from './EventRecieveController';
 import { MapActionsRenderer } from './MapActionsRenderer';
 import { OverlayMapLayout } from '../OverlayMapMenu';
+import { useMapCacheController } from './useMapCacheService';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());
@@ -47,20 +48,17 @@ function DisplayPosition({ map }: { map: Map }) {
 	);
 }
 
-function MapCorePure({ hash }: { hash: string | undefined }) {
+function MapCorePure({ hash }: { hash: string | null }) {
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
 	const [initialLoading, setInitialLoading] = React.useState(true);
+	const [initialCoords, initialZoom] = useMapCacheController(mapRef, hash);
 	const sendEvent = useEmit();
 
 	// Handles Recieving events via websockets
 	useEventRecieveController();
 
-	let mapInitialCoordinates = React.useMemo(
-		() => [59.8676, 30.7755] as LatLngTuple,
-		[]
-	);
-	let mapInitialZoomFactor = 14;
-	let mapInitialTileLayer = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+	const mapInitialTileLayer =
+		'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 
 	// Initialize store
 	const { setMapData, mapName } = useMapStore((mapData) => ({
@@ -108,8 +106,8 @@ function MapCorePure({ hash }: { hash: string | undefined }) {
 			) : null}
 			<OverlayMapLayout />
 			<MapContainer
-				center={mapInitialCoordinates}
-				zoom={mapInitialZoomFactor}
+				center={initialCoords}
+				zoom={initialZoom}
 				id="map"
 				scrollWheelZoom
 				ref={setMapRef}

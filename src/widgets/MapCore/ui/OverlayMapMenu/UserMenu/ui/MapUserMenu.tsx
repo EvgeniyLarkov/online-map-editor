@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { BaseModal } from 'shared/uikit';
 import { HeaderUserActionsMenu } from './OverlayUserActionsMenu';
 
-export function MainOverlayMapMenu() {
+export function MapUserMenu() {
 	const { t } = useTranslation();
 
 	const [modalOpen, setModalOpen] = useState(false);
