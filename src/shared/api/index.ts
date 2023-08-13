@@ -31,12 +31,17 @@ export const makeQuery = async function makeQuery<T, Res>(
 		headers: {},
 	};
 
-	if (typeof token !== 'undefined' && token !== null) {
-		if (!axiosOptions.headers) {
-			axiosOptions.headers = {};
-		}
+	if (!axiosOptions.headers) {
+		axiosOptions.headers = {};
+	}
 
+	if (typeof token !== 'undefined' && token !== null) {
 		axiosOptions.headers.Authorization = `Bearer ${token}`;
+	} else {
+		const anonymousId = JSON.parse(localStorage.getItem('session-store') || '')
+			.state?.anonymousId;
+
+		axiosOptions.headers['anonymous-id'] = anonymousId;
 	}
 
 	if (additionalOptions) {

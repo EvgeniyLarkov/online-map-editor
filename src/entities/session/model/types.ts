@@ -2,10 +2,11 @@ export type SessionType = {
 	isAuthorized: boolean;
 	accessToken: null | string;
 	userHash: null | string;
+	anonId: null | string;
 };
 
 export type SessionState = SessionType & {
-	setSessionData: (data: SessionType) => void;
+	setSessionData: (data: Partial<SessionType>) => void;
 	clear: () => void;
 	// login: (data: LoginRequestDto) => Promise<UserDto | null>;
 };

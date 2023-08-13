@@ -7,8 +7,7 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapOverlayBox } from 'shared/uikit';
-import { useMapUIStore } from 'widgets/MapCore/model/ui';
-import { MAP_UI_MODE } from 'widgets/MapCore/model/ui/types';
+import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
 
 export function ActionsMenu() {
 	const { t } = useTranslation();

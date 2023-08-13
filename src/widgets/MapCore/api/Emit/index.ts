@@ -1,10 +1,6 @@
 import { useSockets } from 'shared/api/transport';
 import { useCallback } from 'react';
-import {
-	ChangeMapEventDto,
-	MapEventDto,
-	mapsActionNames,
-} from '../types/map.types';
+import { ChangeMapActionDto, MapActionDto, mapsActionNames } from '../types';
 
 export const useEmit = () => {
 	const { send } = useSockets(({ emit }) => ({
@@ -16,13 +12,13 @@ export const useEmit = () => {
 			eventName: mapsActionNames,
 			mapHash: string,
 			eventData?:
-				| Omit<MapEventDto, 'mapHash'>
-				| Omit<ChangeMapEventDto, 'mapHash'>
+				| Omit<MapActionDto, 'mapHash'>
+				| Omit<ChangeMapActionDto, 'mapHash'>
 		) => {
 			const reqData:
-				| MapEventDto
-				| Pick<MapEventDto, 'mapHash'>
-				| ChangeMapEventDto = {
+				| MapActionDto
+				| Pick<MapActionDto, 'mapHash'>
+				| ChangeMapActionDto = {
 				mapHash,
 				...eventData,
 			};

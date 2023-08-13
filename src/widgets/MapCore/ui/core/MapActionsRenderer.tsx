@@ -9,7 +9,7 @@ import React from 'react';
 import { LeafletEvent } from 'leaflet';
 import { useEmit } from 'widgets/MapCore/api';
 import { useMapStore } from 'entities/map';
-import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { GetMapActionByType } from '../mapActions/getMapActionByType';
 import { ActionMenu } from '../mapActions';
 

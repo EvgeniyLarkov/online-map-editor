@@ -7,7 +7,7 @@ import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { useEmit } from 'widgets/MapCore/api';
-import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { EventDispatchController } from './EventDispatchController';
 import { useEventRecieveController } from './EventRecieveController';
 import { MapActionsRenderer } from './MapActionsRenderer';
@@ -48,11 +48,13 @@ function DisplayPosition({ map }: { map: Map }) {
 	);
 }
 
-function MapCorePure({ hash }: { hash: string | null }) {
+function MapCorePure() {
+	const { name, hash } = useMapStore((store) => ({
+		name: store.name,
+		hash: store.hash,
+	}));
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
-	const [initialLoading, setInitialLoading] = React.useState(true);
 	const [initialCoords, initialZoom] = useMapCacheController(mapRef, hash);
-	const sendEvent = useEmit();
 
 	// Handles Recieving events via websockets
 	useEventRecieveController();
@@ -61,43 +63,9 @@ function MapCorePure({ hash }: { hash: string | null }) {
 		'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 
 	// Initialize store
-	const { setMapData, mapName } = useMapStore((mapData) => ({
-		setMapData: mapData.update,
-		mapName: mapData.name,
-	}));
-
-	React.useEffect(() => {
-		getMapByHash(hash || '')
-			.then((res) => {
-				if (isSuccessRequest(res)) {
-					setMapData(res);
-				} else {
-					console.log(res);
-					// TO-DO
-				}
-			})
-			.finally(() => {
-				setInitialLoading(false);
-			});
-	}, [hash, setMapData]);
-
-	React.useEffect(() => {
-		if (hash) {
-			sendEvent(MAP_EVENTS.join_map, hash);
-		}
-
-		return () => {
-			if (hash) {
-				sendEvent(MAP_EVENTS.leave_map, hash);
-			}
-		};
-	}, [hash, sendEvent]);
 
 	return (
 		<>
-			{initialLoading ? (
-				<div>intial loading</div> // TO-DO
-			) : null}
 			{mapRef ? (
 				<>
 					<DisplayPosition map={mapRef} />
@@ -112,7 +80,7 @@ function MapCorePure({ hash }: { hash: string | null }) {
 				scrollWheelZoom
 				ref={setMapRef}
 			>
-				<TileLayer attribution={mapName || ''} url={mapInitialTileLayer} />
+				<TileLayer attribution={name || ''} url={mapInitialTileLayer} />
 				<MapActionsRenderer />
 			</MapContainer>
 		</>

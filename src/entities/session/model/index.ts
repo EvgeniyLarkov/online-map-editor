@@ -9,6 +9,7 @@ export const useSession = create<SessionState>()(
 		(set) => ({
 			isAuthorized: false,
 			accessToken: null,
+			anonId: null,
 			userHash: null,
 			setSessionData: (data) => {
 				set({ ...data });
@@ -18,6 +19,7 @@ export const useSession = create<SessionState>()(
 					isAuthorized: false,
 					accessToken: null,
 					userHash: null,
+					anonId: null,
 				});
 			},
 		}),

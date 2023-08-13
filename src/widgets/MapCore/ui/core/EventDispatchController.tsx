@@ -3,9 +3,8 @@ import { MAP_ACTION_TYPES } from 'entities/map-actions';
 import { LeafletMouseEvent, Map } from 'leaflet';
 import React from 'react';
 import { useEmit } from 'widgets/MapCore/api';
-import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
-import { useMapUIStore } from 'widgets/MapCore/model/ui';
-import { MAP_UI_MODE } from 'widgets/MapCore/model/ui/types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types';
+import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
 
 export function EventDispatchController({ map }: { map: Map }) {
 	const { mapHash } = useMapStore((mapData) => ({

@@ -6,7 +6,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Popup } from 'react-leaflet';
 import { useEmit } from 'widgets/MapCore/api';
-import { MAP_EVENTS } from 'widgets/MapCore/api/types/map.types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 
 export function ActionMenu({
 	action,
