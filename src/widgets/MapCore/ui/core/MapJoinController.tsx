@@ -3,8 +3,11 @@ import { useMapStore } from 'entities/map';
 import { getMapByHash } from 'features/map/core/GetMap';
 import React from 'react';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
-import { MAP_EVENTS, useEmit } from 'widgets/MapCore/api';
-import { useMapPermissionsStore } from 'widgets/MapCore/model';
+import { MAP_EVENTS, connectToMapLogined, useEmit } from 'widgets/MapCore/api';
+import {
+	useMapParticipantStore,
+	useMapPermissionsStore,
+} from 'widgets/MapCore/model';
 import { MapCore } from './MapCore';
 import { useMapJoinControllerReciever } from './useMapJoinControllerReciever';
 
@@ -17,8 +20,13 @@ export function MapJoinController({ mapHash }: { mapHash: string }) {
 		setMapData: mapData.update,
 	}));
 
-	const { canView } = useMapPermissionsStore((store) => ({
+	const { canView, setPermissions } = useMapPermissionsStore((store) => ({
 		canView: store.view,
+		setPermissions: store.set,
+	}));
+
+	const { setParticipant } = useMapParticipantStore((store) => ({
+		setParticipant: store.set,
 	}));
 
 	useMapJoinControllerReciever();
@@ -26,11 +34,15 @@ export function MapJoinController({ mapHash }: { mapHash: string }) {
 	React.useEffect(() => {
 		setLoading(true);
 
-		getMapByHash(mapHash || '')
+		const req = connectToMapLogined(mapHash)
 			.then(
 				(res) => {
 					if (isSuccessRequest(res)) {
-						setMapData(res);
+						const { permissions, map, participant } = res;
+
+						setMapData(map);
+						setPermissions(permissions);
+						setParticipant(participant);
 
 						return res;
 					}
@@ -48,12 +60,7 @@ export function MapJoinController({ mapHash }: { mapHash: string }) {
 			.finally(() => {
 				setLoading(false);
 			});
-
-		return () => {
-			if (mapHash) {
-				sendEvent(MAP_EVENTS.leave_map, mapHash);
-			}
-		};
+		return () => {};
 	}, [mapHash, setMapData, sendEvent]);
 
 	if (loading) {
