@@ -6,3 +6,6 @@ export {
 	type ChangeMapActionDto,
 	type MapEventGetActionsDTO,
 } from './types';
+
+export { connectToMapUnlogined, connectToMapLogined } from './GetMap';
+export { type connectToMapDTO } from './GetMap/types';
