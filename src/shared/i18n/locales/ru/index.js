@@ -85,7 +85,13 @@ const translation = {
 				description_placeholder: 'Добавьте описание',
 			},
 		},
-
+		errors: {
+			label: 'Ошибка',
+			description: {
+				default:
+					'Что-то пошло не по плану, попробуйте перезагрузить страницу и проверьте данные',
+			},
+		},
 		chat,
 		profile,
 	},

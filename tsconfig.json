@@ -21,6 +21,10 @@
       "es7",
       "dom"
     ],
+    "typeRoots": [
+      "src/types",
+      "node_modules/@types"
+    ],
     "baseUrl": "./src",
     "paths": {
       "src/*": [

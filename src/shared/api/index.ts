@@ -6,6 +6,8 @@ import axios, {
 } from 'axios';
 import { getUrl } from 'shared/common/getUrl';
 import { transformError } from 'shared/common/transformError';
+import { transformOMEError } from 'shared/common/transformOMEError';
+import { OMEError, errorsStore } from 'shared/stores/errors';
 import {
 	EndpointObject,
 	RequestAdditionalOptions,
@@ -63,13 +65,15 @@ export const makeQuery = async function makeQuery<T, Res>(
 	}
 };
 
+type queryReturnType<Res> = AxiosPromise<Res> & { abort: () => void };
+
 /**
  * OME: Main method to make raw queries
  */
 export const queryRaw = function queryRaw<T, Res>(
 	endpoint: EndpointObject,
 	options: RequestOptions<T>
-): { request: AxiosPromise<Res>; abort: () => void } {
+): queryReturnType<Res> {
 	const { data } = options;
 
 	const routeText = endpoint.url(options);
@@ -102,5 +106,34 @@ export const queryRaw = function queryRaw<T, Res>(
 
 	const request: AxiosPromise<Res> = axios(axiosOptions);
 
-	return { request, abort: () => controller.abort() };
+	const enhancedRequest = request as typeof request & { abort: () => void }; // Хитрость
+	enhancedRequest.abort = () => controller.abort();
+
+	return enhancedRequest;
+};
+
+/**
+ * OME: Method to make queries with default errors handling
+ * If query results in error it will be handled with default error handler
+ * See NotificationsModule
+ */
+export const querySimple = async function querySimple<T, Res>(
+	endpoint: EndpointObject,
+	options: RequestOptions<T>
+): Promise<queryReturnType<Res>> {
+	try {
+		const query = queryRaw<T, Res>(endpoint, options);
+		const result = await query;
+
+		return result;
+	} catch (err: AxiosError | Error | unknown) {
+		const { addError } = errorsStore((state) => ({
+			addError: state.add,
+		}));
+
+		const error = transformOMEError(err);
+		addError(error);
+
+		throw new OMEError(error);
+	}
 };

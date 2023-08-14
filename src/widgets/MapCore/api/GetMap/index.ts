@@ -1,12 +1,12 @@
-import { makeQuery } from 'shared/api';
+import { queryRaw } from 'shared/api';
 import {
 	getMapLoginedEndpoint,
 	getMapUnloginedEndpoint,
 } from './connectToMap.endpoint';
 import { connectToMapDTO } from './types';
 
-export const connectToMapLogined = async (hash: string) => {
-	const response = await makeQuery<{ hash: string }, connectToMapDTO>(
+export const connectToMapLogined = (hash: string) => {
+	const response = queryRaw<{ hash: string }, connectToMapDTO>(
 		getMapLoginedEndpoint,
 		{
 			hash,
@@ -16,8 +16,8 @@ export const connectToMapLogined = async (hash: string) => {
 	return response;
 };
 
-export const connectToMapUnlogined = async (hash: string) => {
-	const response = await makeQuery<{ hash: string }, connectToMapDTO>(
+export const connectToMapUnlogined = (hash: string) => {
+	const response = queryRaw<{ hash: string }, connectToMapDTO>(
 		getMapUnloginedEndpoint,
 		{
 			hash,

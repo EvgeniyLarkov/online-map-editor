@@ -1,19 +1,21 @@
 import { Center, Flex, Heading, Spinner } from '@chakra-ui/react';
 import { useMapStore } from 'entities/map';
-import { getMapByHash } from 'features/map/core/GetMap';
 import React from 'react';
-import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { MAP_EVENTS, connectToMapLogined, useEmit } from 'widgets/MapCore/api';
 import {
 	useMapParticipantStore,
 	useMapPermissionsStore,
 } from 'widgets/MapCore/model';
+import { UnifiedError } from 'shared/stores/errors';
+import { transformOMEError } from 'shared/common/transformOMEError';
+import { useTranslation } from 'react-i18next';
 import { MapCore } from './MapCore';
 import { useMapJoinControllerReciever } from './useMapJoinControllerReciever';
 
 export function MapJoinController({ mapHash }: { mapHash: string }) {
 	const sendEvent = useEmit();
-	const [loading, setLoading] = React.useState(false);
+	const { t } = useTranslation();
+	const [loading, setLoading] = React.useState(true);
 	const [errorReason, setErrorReason] = React.useState<null | string>(null);
 
 	const { setMapData } = useMapStore((mapData) => ({
@@ -34,39 +36,51 @@ export function MapJoinController({ mapHash }: { mapHash: string }) {
 	React.useEffect(() => {
 		setLoading(true);
 
-		const req = connectToMapLogined(mapHash)
-			.then(
-				(res) => {
-					if (isSuccessRequest(res)) {
-						const { permissions, map, participant } = res;
-
-						setMapData(map);
-						setPermissions(permissions);
-						setParticipant(participant);
-
-						return res;
-					}
-					return false;
-				},
-				() => {
-					return false;
-				}
-			)
+		const fetchPromise = connectToMapLogined(mapHash);
+		fetchPromise
 			.then((res) => {
-				if (res) {
+				const { permissions, map, participant } = res.data;
+
+				setMapData(map);
+				setPermissions(permissions);
+				setParticipant(participant);
+
+				return res.data;
+			})
+			.then((res) => {
+				const participantCanView = res.permissions.view;
+
+				if (participantCanView) {
 					sendEvent(MAP_EVENTS.join_map, mapHash);
+				} else {
+					setLoading(false);
 				}
+				return res;
+			})
+			.catch((err: UnifiedError) => {
+				console.log(err);
+				const error = transformOMEError(err);
+				console.log(error);
+				setErrorReason(
+					error.type === 'default'
+						? t('errors.description.default')
+						: error.message
+				);
 			})
 			.finally(() => {
 				setLoading(false);
 			});
-		return () => {};
-	}, [mapHash, setMapData, sendEvent]);
+
+		return () => {
+			fetchPromise.abort();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [mapHash]);
 
 	if (loading) {
 		return (
 			<Center bg="gray.100" h="100vh">
-				<Flex direction="column" gap={2}>
+				<Flex direction="column" gap={2} align="center" justify="center">
 					<Heading as="h2" size="xl">
 						Loading map data
 					</Heading>
