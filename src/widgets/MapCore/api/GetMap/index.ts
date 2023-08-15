@@ -1,4 +1,6 @@
-import { queryRaw } from 'shared/api';
+import { defaultErrorHandlingMiddleware, queryRaw } from 'shared/api';
+import { queryWithMiddleware } from 'shared/common/queryWithMiddleware';
+import { unauthorizedMiddleware } from 'entities/session';
 import {
 	getMapLoginedEndpoint,
 	getMapUnloginedEndpoint,
@@ -6,22 +8,24 @@ import {
 import { connectToMapDTO } from './types';
 
 export const connectToMapLogined = (hash: string) => {
-	const response = queryRaw<{ hash: string }, connectToMapDTO>(
+	const response = queryWithMiddleware<{ hash: string }, connectToMapDTO>(
 		getMapLoginedEndpoint,
 		{
 			hash,
-		}
+		},
+		[defaultErrorHandlingMiddleware, unauthorizedMiddleware]
 	);
 
 	return response;
 };
 
 export const connectToMapUnlogined = (hash: string) => {
-	const response = queryRaw<{ hash: string }, connectToMapDTO>(
+	const response = queryWithMiddleware<{ hash: string }, connectToMapDTO>(
 		getMapUnloginedEndpoint,
 		{
 			hash,
-		}
+		},
+		[defaultErrorHandlingMiddleware]
 	);
 
 	return response;

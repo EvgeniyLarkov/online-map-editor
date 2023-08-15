@@ -4,7 +4,7 @@ import { SessionState } from './types';
 
 const sessionStoreName = 'session-store';
 
-export const useSession = create<SessionState>()(
+export const SessionStorage = create<SessionState>()(
 	persist(
 		(set) => ({
 			isAuthorized: false,
@@ -19,7 +19,6 @@ export const useSession = create<SessionState>()(
 					isAuthorized: false,
 					accessToken: null,
 					userHash: null,
-					anonId: null,
 				});
 			},
 		}),

@@ -21,10 +21,35 @@ export function transformOMEError(
 			const code = parseInt(error.code, 10);
 
 			if (code > 0) {
-				OMEerror.statusCode = parseInt(error.code, 10);
+				OMEerror.statusCode = code;
 			}
 		}
-	} else if (isWsError(error)) {
+
+		const { response } = error;
+
+		if (response) {
+			const code = response.status;
+
+			if (code > 0) {
+				OMEerror.statusCode = code;
+			}
+
+			if (response.data && typeof response.data === 'object') {
+				const data = response.data as Record<string, unknown>;
+
+				if (typeof data.message === 'string') {
+					OMEerror.message = data.message;
+				}
+			}
+		}
+
+		if (axios.isCancel(error)) {
+			OMEerror.type = 'cancel';
+		}
+
+		return OMEerror;
+	}
+	if (isWsError(error)) {
 		return {
 			type: 'custom',
 			id: nanoid(5), // Pohui,

@@ -1,4 +1,4 @@
-import { MapAction } from 'entities/map-actions/model/types';
+import { MapAction } from 'entities/map-actions';
 import React from 'react';
 import { Marker, MarkerProps } from 'react-leaflet';
 import { isLatLng } from 'shared/common/isLatLng';

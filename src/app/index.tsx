@@ -1,4 +1,4 @@
-import { useSession } from 'entities/session';
+import { SessionStorage } from 'entities/session';
 import { router } from 'pages';
 import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
@@ -10,7 +10,7 @@ import {
 } from 'shared/api/transport/websockets/types';
 
 function App() {
-	const { isAuthorized, key, anonId, setSessionData } = useSession(
+	const { isAuthorized, key, anonId, setSessionData } = SessionStorage(
 		(session) => ({
 			isAuthorized: session.isAuthorized,
 			key: session.accessToken,
@@ -37,6 +37,8 @@ function App() {
 	const getToken = () => key || '';
 	const getAnonId = () => anonId || '';
 
+	const userConnected = React.useMemo(() => isConnected(), [isConnected]);
+
 	if (isAuthorized) {
 		if (!socketConnecting && !isConnected())
 			handleConnectToSockets(getToken, SOCKET_NAMESPACES.map);
@@ -49,14 +51,15 @@ function App() {
 			setSessionData(data);
 		};
 
+		console.log('connection changed');
 		connection?.on(SOCKET_SERVICE_EVENTS.on_connect, onRecieveConnectionData);
 
-		return () => {
-			connection?.off(
-				SOCKET_SERVICE_EVENTS.on_connect,
-				onRecieveConnectionData
-			);
-		};
+		// return () => {
+		// 	connection?.off(
+		// 		SOCKET_SERVICE_EVENTS.on_connect,
+		// 		onRecieveConnectionData
+		// 	);
+		// };
 	}, [connection, setSessionData]);
 
 	return <RouterProvider router={router} />;

@@ -1,9 +1,5 @@
-import { MapAction, mapActionTypes } from 'entities/map-actions/model/types';
+import { mapActionTypes } from 'entities/map-actions/model/types';
 import { LatLng } from 'leaflet';
-import {
-	MapParticipant,
-	ParticipantMapPermissions,
-} from 'widgets/MapCore/model';
 
 export const MAP_EVENTS = {
 	new_action: 'new_action',
@@ -32,9 +28,3 @@ export interface ChangeMapActionDto {
 	coordinates?: LatLng;
 	data?: Record<string, unknown>;
 }
-
-export type MapEventGetActionsDTO = {
-	participant: MapParticipant;
-	permissions: ParticipantMapPermissions;
-	actions: MapAction[];
-};

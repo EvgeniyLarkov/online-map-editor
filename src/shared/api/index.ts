@@ -65,7 +65,7 @@ export const makeQuery = async function makeQuery<T, Res>(
 	}
 };
 
-type queryReturnType<Res> = AxiosPromise<Res> & { abort: () => void };
+export type queryReturnType<Res> = AxiosPromise<Res> & { abort: () => void };
 
 /**
  * OME: Main method to make raw queries
@@ -137,3 +137,14 @@ export const querySimple = async function querySimple<T, Res>(
 		throw new OMEError(error);
 	}
 };
+
+export const defaultErrorHandlingMiddleware =
+	function defaultErrorHandlingMiddleware<Res>(
+		query: Promise<AxiosResponse<Res, any>>
+	) {
+		return query.catch((err: OMEError) => {
+			// errorsStore.getState().add(err);
+			console.log('defaultErrorHandlingMiddleware fired');
+			return Promise.reject(err);
+		});
+	};

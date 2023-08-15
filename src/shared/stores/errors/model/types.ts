@@ -35,7 +35,7 @@ export type ErrorsStore = ErrorStoreActions & ErrorStoreVariables;
 export class OMEError extends Error {
 	id: string;
 
-	type: 'default' | 'custom';
+	type: 'default' | 'custom' | 'cancel';
 
 	msg?: string[];
 

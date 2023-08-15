@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { UnsuccssesRequest } from 'shared/api/types';
-import { useSession } from 'entities/session';
+import { SessionStorage } from 'entities/session';
 import { Button, Flex } from '@chakra-ui/react';
 import { FieldInput } from 'shared/uikit';
 import { useUserStore } from 'entities/user';
@@ -24,7 +24,7 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 	const [loginPending, setLoginPending] = useState(false);
 
 	const initialValues: FormValues = { email: '', password: '' };
-	const setSessionData = useSession((session) => session.setSessionData);
+	const setSessionData = SessionStorage((session) => session.setSessionData);
 	const setUserData = useUserStore((user) => user.update);
 
 	const handleSetServerError = (

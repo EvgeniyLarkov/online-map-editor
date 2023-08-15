@@ -1,5 +1,4 @@
-import { MAP_ACTION_TYPES } from 'entities/map-actions';
-import { MapAction } from 'entities/map-actions/model/types';
+import { MAP_ACTION_TYPES, MapAction } from 'entities/map-actions';
 import { LocationMarker } from './Marker/Marker';
 
 export function GetMapActionByType(action: MapAction) {

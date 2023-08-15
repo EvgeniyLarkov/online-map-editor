@@ -1,18 +1,15 @@
 /* eslint-disable prefer-const */
 import { Box } from '@chakra-ui/react';
 import { useMapStore } from 'entities/map';
-import { getMapByHash } from 'features/map/core/GetMap';
-import { LatLngTuple, Map } from 'leaflet';
+import { Map } from 'leaflet';
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { isSuccessRequest } from 'shared/common/isSuccessRequest';
-import { useEmit } from 'widgets/MapCore/api';
-import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { EventDispatchController } from './EventDispatchController';
-import { useEventRecieveController } from './EventRecieveController';
+import { useEventRecieveController } from './RecieveController/EventRecieveController';
 import { MapActionsRenderer } from './MapActionsRenderer';
 import { OverlayMapLayout } from '../OverlayMapMenu';
 import { useMapCacheController } from './useMapCacheService';
+import { useMapJoinController } from './useMapJoinControllerReciever';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());
@@ -55,14 +52,12 @@ function MapCorePure() {
 	}));
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
 	const [initialCoords, initialZoom] = useMapCacheController(mapRef, hash);
-
 	// Handles Recieving events via websockets
 	useEventRecieveController();
+	useMapJoinController(hash);
 
 	const mapInitialTileLayer =
 		'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-
-	// Initialize store
 
 	return (
 		<>

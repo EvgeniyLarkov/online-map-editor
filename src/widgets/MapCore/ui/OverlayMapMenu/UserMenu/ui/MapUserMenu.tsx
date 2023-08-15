@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import { useSession } from 'entities/session';
+import { SessionStorage } from 'entities/session';
 import { useUserStore } from 'entities/user';
 import { LoginForm } from 'features/authentication/login';
 import React, { useState } from 'react';
@@ -15,7 +15,7 @@ export function MapUserMenu() {
 		firstName: user.firstName,
 		lastName: user.lastName,
 	}));
-	const hasSession = useSession((session) => session.isAuthorized);
+	const hasSession = SessionStorage((session) => session.isAuthorized);
 
 	const onLoginClick = () => {
 		setModalOpen(true);

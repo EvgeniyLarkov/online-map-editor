@@ -1,34 +1,17 @@
 import { shallow } from 'zustand/shallow';
-import { useMapActionsStore } from 'entities/map-actions';
 import React from 'react';
-import { MAP_EVENTS, MapEventGetActionsDTO } from 'widgets/MapCore/api/types';
+import { MAP_EVENTS } from 'widgets/MapCore/api/types';
+import { useMapActionsStore } from 'entities/map-actions';
 import { useSockets } from 'shared/api/transport';
-import {
-	useMapParticipantStore,
-	useMapPermissionsStore,
-} from 'widgets/MapCore/model';
+import { useEmit } from 'widgets/MapCore/api';
+import { JoinMapResponseDTO } from './RecieveController/types';
 
-export function useMapJoinControllerReciever() {
-	const { addActions } = useMapActionsStore(
-		(state) => ({
-			addActions: state.add,
-		}),
-		shallow
-	);
+export function useMapJoinController(mapHash: string | null) {
+	const { addActions } = useMapActionsStore((state) => ({
+		addActions: state.add,
+	}));
 
-	const { addParticipant } = useMapParticipantStore(
-		(state) => ({
-			addParticipant: state.set,
-		}),
-		shallow
-	);
-
-	const { addPermissions } = useMapPermissionsStore(
-		(state) => ({
-			addPermissions: state.set,
-		}),
-		shallow
-	);
+	const sendEvent = useEmit();
 
 	const { io } = useSockets(
 		(state) => ({
@@ -38,10 +21,15 @@ export function useMapJoinControllerReciever() {
 	);
 
 	React.useEffect(() => {
-		const onGetActionsListener = (data: MapEventGetActionsDTO) => {
+		if (mapHash) {
+			sendEvent(MAP_EVENTS.join_map, mapHash);
+		}
+	}, [mapHash, sendEvent]);
+
+	React.useEffect(() => {
+		const onGetActionsListener = (data: JoinMapResponseDTO) => {
+			console.log(data);
 			addActions(data.actions);
-			addParticipant(data.participant);
-			addPermissions(data.permissions);
 		};
 
 		io?.on(MAP_EVENTS.get_actions, onGetActionsListener);
