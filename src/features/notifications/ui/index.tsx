@@ -3,6 +3,7 @@ import {
 	AlertDescription,
 	AlertIcon,
 	AlertTitle,
+	Box,
 	Flex,
 } from '@chakra-ui/react';
 import React, { useState, useEffect, useMemo } from 'react';
@@ -13,7 +14,7 @@ import { shallow } from 'zustand/shallow';
 
 export function NotificationsModule() {
 	const { t } = useTranslation();
-	const [activeErrors, setActiveErrors] = useState<Record<string, boolean>>({});
+	const [activeErrors, setActiveErrors] = useState<string[]>([]);
 	const [expiredErrors, setExpiredErrors] = useState<Record<string, boolean>>(
 		{}
 	);
@@ -27,63 +28,63 @@ export function NotificationsModule() {
 		shallow
 	);
 
+	console.log(errorsById);
+
+	const newErrorsList = useMemo(() => {
+		return errorsList.filter(
+			(errorHash) =>
+				!expiredErrors[errorHash] && !activeErrors.includes(errorHash)
+		);
+	}, [errorsList]);
+
 	useEffect(() => {
-		const addHashes: Record<string, boolean> = {};
+		setActiveErrors((state) => [...state, ...newErrorsList]);
 
-		const makeErrorsExpire = (hashes: Record<string, boolean>) => {
-			setTimeout(() => {
-				const expiredHashes: Record<string, boolean> = hashes;
+		const timeoutId = setTimeout(() => {
+			const expiredHashes: Record<string, boolean> = newErrorsList.reduce(
+				(acc, item) => ({ ...acc, [item]: true }),
+				{}
+			);
 
-				setExpiredErrors((items) => ({ ...items, ...expiredHashes }));
-				setActiveErrors((items) => {
-					const newActiveErrors = { ...items };
+			setExpiredErrors((items) => ({ ...items, ...expiredHashes }));
+			setActiveErrors((items) => items.filter((item) => !expiredHashes[item]));
+		}, EXPIRE_TIMEOUT);
 
-					Object.keys(hashes).forEach((key) => {
-						delete newActiveErrors[key];
-					});
-
-					return newActiveErrors;
-				});
-			}, EXPIRE_TIMEOUT);
+		return () => {
+			clearTimeout(timeoutId);
 		};
-
-		let addHashCount = 0;
-		errorsList.forEach((errorHash) => {
-			const exist = !!expiredErrors[errorHash] || !!activeErrors[errorHash];
-
-			if (!exist) {
-				addHashes[errorHash] = true;
-			}
-			addHashCount += 1;
-		});
-
-		if (addHashCount > 0) {
-			setActiveErrors((items) => ({ ...items, ...addHashes }));
-			makeErrorsExpire(addHashes);
-		}
-	}, [activeErrors, expiredErrors, errorsList]);
+	}, [newErrorsList]);
 
 	const errorsElements = useMemo(() => {
-		return Object.keys(activeErrors).map((key) => {
+		return activeErrors.map((key) => {
 			return errorsById[key] || null;
 		});
-	}, [activeErrors, errorsById]); // TO-DO
+	}, [activeErrors]); // TO-DO
 
 	return (
 		<Flex
 			direction="column"
 			gap={2}
 			position="fixed"
-			right={0}
-			bottom={0}
+			right={4}
+			bottom={4}
 			display={errorsElements.length > 0 ? 'flex' : 'none'}
 		>
 			{errorsElements.map((error) => {
 				return (
-					<MapOverlayBox>
-						<Alert status="error">
-							<AlertIcon />
-							<AlertTitle>{t('errors.label')}</AlertTitle>
+					<MapOverlayBox key={error.id} pos="relative" bg="red.100" p={2}>
+						<Alert
+							status="error"
+							display="flex"
+							flexDirection="column"
+							alignItems="flex-start"
+							gap={2}
+						>
+							<Flex>
+								<AlertIcon />
+								<AlertTitle>{t('errors.label')}</AlertTitle>
+							</Flex>
+
 							<AlertDescription>
 								{error.type === 'default'
 									? t('errors.description.default')

@@ -28,7 +28,6 @@ export function useMapJoinController(mapHash: string | null) {
 
 	React.useEffect(() => {
 		const onGetActionsListener = (data: JoinMapResponseDTO) => {
-			console.log(data);
 			addActions(data.actions);
 		};
 

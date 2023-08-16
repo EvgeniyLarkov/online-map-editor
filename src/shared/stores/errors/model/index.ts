@@ -40,6 +40,8 @@ export const errorsStore = create<ErrorsStore>((set) => ({
 				});
 			}
 
+			console.log('adding error');
+
 			return newState;
 		}),
 	drop: (hashes) =>

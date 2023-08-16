@@ -1,5 +1,4 @@
-import { ReactIcon } from '@chakra-ui/icons';
-import { Flex, IconButton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import {
 	MAP_ACTION_TYPES,
 	mapActionTypes,
@@ -8,6 +7,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapOverlayBox } from 'shared/uikit';
 import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
+import { IoLocationOutline, IoSettingsOutline } from 'react-icons/io5';
+import { ActionsMenuIcon } from './ActionMenuButton';
+import {
+	MAP_SETTINGS_MENU_CATEGORIES,
+	MapSettingsUIStore,
+} from '../MapSettings';
 
 export function ActionsMenu() {
 	const { t } = useTranslation();
@@ -18,6 +23,11 @@ export function ActionsMenu() {
 			changeMode: state.changeMode,
 			selectAction: state.selectAction,
 		}));
+
+	const { opened, open } = MapSettingsUIStore((state) => ({
+		opened: state.opened,
+		open: state.open,
+	}));
 
 	const onChangeActionClick = React.useCallback(
 		(actionType: mapActionTypes) => () => {
@@ -34,17 +44,24 @@ export function ActionsMenu() {
 		[selectedMode, selectedAction, changeMode, selectAction]
 	);
 
+	const onOpenSettingsMenu = React.useCallback(() => {
+		open();
+	}, [open]);
+
 	return (
 		<MapOverlayBox left={0} right={0} margin="auto" top={4} width="fit-content">
 			<Flex gap={2}>
-				<IconButton
-					aria-label={t('maps.actions.tips.drop')}
-					icon={<ReactIcon />}
-					size="lg"
-					colorScheme={
-						selectedAction === MAP_ACTION_TYPES.marker ? 'blue' : 'teal'
-					}
+				<ActionsMenuIcon
+					message={t(`maps.actions.names.${MAP_ACTION_TYPES.marker}`)}
+					icon={<IoLocationOutline size="24px" />}
+					selected={selectedAction === MAP_ACTION_TYPES.marker}
 					onClick={onChangeActionClick(MAP_ACTION_TYPES.marker)}
+				/>
+				<ActionsMenuIcon
+					message={t(`maps.settings.default.label`)}
+					icon={<IoSettingsOutline size="24px" />}
+					selected={opened}
+					onClick={onOpenSettingsMenu}
 				/>
 			</Flex>
 		</MapOverlayBox>

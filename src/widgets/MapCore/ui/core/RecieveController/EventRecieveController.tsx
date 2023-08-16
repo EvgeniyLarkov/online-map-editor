@@ -29,7 +29,7 @@ export function useEventRecieveController() {
 			dropActions(data);
 		};
 
-		io?.on(MAP_EVENTS.new_action, onModifyActionsListener); // TO-DO add types check (DTOs)
+		io?.on(MAP_EVENTS.new_action, onModifyActionsListener); // TO-DO add types check (DTOs) and error handling
 		io?.on(MAP_EVENTS.drop_action, onDropActionsListender);
 		io?.on(MAP_EVENTS.change_action, onModifyActionsListener);
 		io?.on(MAP_EVENTS.join_map, onModifyActionsListener);

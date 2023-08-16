@@ -127,12 +127,8 @@ export const querySimple = async function querySimple<T, Res>(
 
 		return result;
 	} catch (err: AxiosError | Error | unknown) {
-		const { addError } = errorsStore((state) => ({
-			addError: state.add,
-		}));
-
 		const error = transformOMEError(err);
-		addError(error);
+		errorsStore.getState().add(error);
 
 		throw new OMEError(error);
 	}
@@ -143,7 +139,7 @@ export const defaultErrorHandlingMiddleware =
 		query: Promise<AxiosResponse<Res, any>>
 	) {
 		return query.catch((err: OMEError) => {
-			// errorsStore.getState().add(err);
+			errorsStore.getState().add(err);
 			console.log('defaultErrorHandlingMiddleware fired');
 			return Promise.reject(err);
 		});

@@ -1,6 +1,8 @@
+export type OMEErrorTypes = 'default' | 'custom' | 'cancel';
+
 export interface OMEErrorType {
 	id: string;
-	type: 'default' | 'custom';
+	type: OMEErrorTypes;
 	msg?: string[];
 	statusCode?: number;
 	rawError: UnifiedError;
@@ -35,7 +37,7 @@ export type ErrorsStore = ErrorStoreActions & ErrorStoreVariables;
 export class OMEError extends Error {
 	id: string;
 
-	type: 'default' | 'custom' | 'cancel';
+	type: OMEErrorTypes;
 
 	msg?: string[];
 
