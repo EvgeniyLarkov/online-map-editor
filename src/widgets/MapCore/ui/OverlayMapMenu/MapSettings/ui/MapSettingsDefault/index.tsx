@@ -13,7 +13,7 @@ import {
 	changeMapParticipantLogined,
 	changeMapParticipantUnlogined,
 } from 'widgets/MapCore/api/participant/changeMapParticipant';
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 
 type FormValues = {
 	name: string;
@@ -29,7 +29,7 @@ export function MapSettingsDefaultForm() {
 		setParticipant: state.set,
 	}));
 	const logined = SessionStore((session) => session.isAuthorized);
-	const mapHash = useMapStore((state) => state.hash);
+	const mapHash = MapStore((state) => state.hash);
 
 	const initialValues: FormValues = React.useMemo(
 		() => ({ name: name || '' }),

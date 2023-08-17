@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { Box } from '@chakra-ui/react';
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 import { Map } from 'leaflet';
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
@@ -46,7 +46,7 @@ function DisplayPosition({ map }: { map: Map }) {
 }
 
 function MapCorePure() {
-	const { name, hash } = useMapStore((store) => ({
+	const { name, hash } = MapStore((store) => ({
 		name: store.name,
 		hash: store.hash,
 	}));

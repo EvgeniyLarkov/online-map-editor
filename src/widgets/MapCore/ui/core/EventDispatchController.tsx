@@ -1,4 +1,4 @@
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 import { MAP_ACTION_TYPES } from 'entities/map-actions';
 import { LeafletMouseEvent, Map } from 'leaflet';
 import React from 'react';
@@ -7,7 +7,7 @@ import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
 
 export function EventDispatchController({ map }: { map: Map }) {
-	const { mapHash } = useMapStore((mapData) => ({
+	const { mapHash } = MapStore((mapData) => ({
 		mapHash: mapData.hash,
 	}));
 	const { selectedMode, selectedAction } = useMapUIStore((state) => ({

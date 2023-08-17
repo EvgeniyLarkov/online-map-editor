@@ -1,6 +1,6 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Flex, Heading, IconButton, Text, Tooltip } from '@chakra-ui/react';
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 import { MapAction } from 'entities/map-actions/model/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ export function ActionMenu({
 }: { action: MapAction } & React.PropsWithChildren) {
 	const { t } = useTranslation();
 	const sendEvent = useEmit();
-	const { mapHash } = useMapStore((mapData) => ({
+	const { mapHash } = MapStore((mapData) => ({
 		mapHash: mapData.hash,
 	}));
 

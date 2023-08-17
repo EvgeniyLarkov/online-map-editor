@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { MapStore } from './types';
+import { MapStoreType } from './types';
 
-export const useMapStore = create<MapStore>((set) => ({
+export const MapStore = create<MapStoreType>((set) => ({
 	id: null,
 	hash: null,
 	name: null,

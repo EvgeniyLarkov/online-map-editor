@@ -18,7 +18,7 @@ import {
 } from '../types';
 import { MapSettingsUIStore } from '../model';
 import { MapSettingsMapForm } from './MapSettingsMap';
-import { MapSettingsDefaultForm } from './MapSettingsDefault/default';
+import { MapSettingsDefaultForm } from './MapSettingsDefault';
 
 export function MapSettingsSidemenu() {
 	const { t } = useTranslation();
@@ -83,6 +83,11 @@ export function MapSettingsSidemenu() {
 						<Box h="100%" flex={1} p={4}>
 							{category === MAP_SETTINGS_MENU_CATEGORIES.default && (
 								<MapSettingsDefaultForm />
+							)}
+							{category === MAP_SETTINGS_MENU_CATEGORIES.map && (
+								<MapSettingsMapForm
+									canChangeProperties={!!canChangeMapProperties}
+								/>
 							)}
 						</Box>
 					</Flex>

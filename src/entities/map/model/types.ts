@@ -16,4 +16,4 @@ export type MapStoreActions = {
 	update: (data: Partial<OMEMap>) => void;
 };
 
-export type MapStore = MapStoreActions & WithNull<OMEMap>;
+export type MapStoreType = MapStoreActions & WithNull<OMEMap>;

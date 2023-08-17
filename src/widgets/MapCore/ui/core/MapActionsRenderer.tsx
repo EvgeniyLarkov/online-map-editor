@@ -8,7 +8,7 @@ import React from 'react';
 // import { MAP_UI_MODE } from 'widgets/MapCore/model/ui/types';
 import { LeafletEvent } from 'leaflet';
 import { useEmit } from 'widgets/MapCore/api';
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { GetMapActionByType } from '../mapActions/getMapActionByType';
 import { ActionMenu } from '../mapActions';
@@ -22,7 +22,7 @@ function MapActionsRendererPure() {
 		shallow // TO-DO need function to prevent rerenders
 	);
 
-	const { mapHash } = useMapStore((mapData) => ({
+	const { mapHash } = MapStore((mapData) => ({
 		mapHash: mapData.hash,
 	}));
 	const sendEvent = useEmit();

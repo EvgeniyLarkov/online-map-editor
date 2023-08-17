@@ -1,4 +1,4 @@
-import { useMapStore } from 'entities/map';
+import { MapStore } from 'entities/map';
 import React from 'react';
 import {
 	connectToMapLogined,
@@ -21,7 +21,7 @@ export function MapJoinController({ mapHash }: { mapHash?: string }) {
 	const [loading, setLoading] = React.useState(true);
 	const [errorReason, setErrorReason] = React.useState<null | OMEError>(null);
 
-	const { setMapData } = useMapStore((mapData) => ({
+	const { setMapData } = MapStore((mapData) => ({
 		setMapData: mapData.update,
 	}));
 
