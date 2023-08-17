@@ -5,12 +5,12 @@ import {
 	connectToMapUnlogined,
 } from 'widgets/MapCore/api';
 import {
-	useMapParticipantStore,
+	MapParticipantStore,
 	useMapPermissionsStore,
 } from 'widgets/MapCore/model';
 import { OMEError } from 'shared/stores/errors';
 import { useTranslation } from 'react-i18next';
-import { SessionStorage } from 'entities/session';
+import { SessionStore } from 'entities/session';
 import { MapCore } from '../MapCore';
 import { ControllerWarnScreen } from './ui/ControllerWarnPlaceholder';
 import { ControllerLoadingScreen } from './ui/ControllerLoadingPlaceholder';
@@ -30,11 +30,11 @@ export function MapJoinController({ mapHash }: { mapHash?: string }) {
 		setPermissions: store.set,
 	}));
 
-	const { setParticipant } = useMapParticipantStore((store) => ({
+	const { setParticipant } = MapParticipantStore((store) => ({
 		setParticipant: store.set,
 	}));
 
-	const { logined } = SessionStorage((state) => ({
+	const { logined } = SessionStore((state) => ({
 		logined: state.isAuthorized,
 	}));
 

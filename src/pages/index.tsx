@@ -10,8 +10,8 @@ export const router = createBrowserRouter([
 		path: '/map/:hash',
 		element: (
 			<>
-				<MapRouterPage />
 				<NotificationsModule />
+				<MapRouterPage />
 			</>
 		),
 	},
@@ -19,8 +19,8 @@ export const router = createBrowserRouter([
 		path: '/',
 		element: (
 			<>
-				<MapRouterPage />
 				<NotificationsModule />
+				<MapRouterPage />
 			</>
 		),
 	},

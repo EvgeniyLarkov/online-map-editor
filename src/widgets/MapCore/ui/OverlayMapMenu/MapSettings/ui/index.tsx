@@ -1,4 +1,5 @@
 import {
+	Box,
 	Drawer,
 	DrawerBody,
 	DrawerContent,
@@ -16,6 +17,8 @@ import {
 	mapSettingsMenuCategoriesTypes,
 } from '../types';
 import { MapSettingsUIStore } from '../model';
+import { MapSettingsMapForm } from './MapSettingsMap';
+import { MapSettingsDefaultForm } from './MapSettingsDefault/default';
 
 export function MapSettingsSidemenu() {
 	const { t } = useTranslation();
@@ -77,6 +80,11 @@ export function MapSettingsSidemenu() {
 								/>
 							)}
 						</Flex>
+						<Box h="100%" flex={1} p={4}>
+							{category === MAP_SETTINGS_MENU_CATEGORIES.default && (
+								<MapSettingsDefaultForm />
+							)}
+						</Box>
 					</Flex>
 				</DrawerBody>
 			</DrawerContent>

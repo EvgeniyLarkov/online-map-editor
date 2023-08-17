@@ -134,13 +134,15 @@ export const querySimple = async function querySimple<T, Res>(
 	}
 };
 
+/**
+ * OME: Middleware for queryWithMiddleware method. Adds new error to notifications store
+ */
 export const defaultErrorHandlingMiddleware =
 	function defaultErrorHandlingMiddleware<Res>(
 		query: Promise<AxiosResponse<Res, any>>
 	) {
 		return query.catch((err: OMEError) => {
 			errorsStore.getState().add(err);
-			console.log('defaultErrorHandlingMiddleware fired');
 			return Promise.reject(err);
 		});
 	};

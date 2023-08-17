@@ -19,7 +19,7 @@ type FormValues = {
 	name: string;
 };
 
-export function MapSettingsMapForm() {
+export function MapSettingsDefaultForm() {
 	const { t } = useTranslation();
 	const [pending, setPending] = useState(false);
 
@@ -57,6 +57,7 @@ export function MapSettingsMapForm() {
 				.then((result) => {
 					setParticipant({ name: result.data.name });
 				})
+				.catch((err) => {})
 				.finally(() => {
 					setPending(false);
 				});
@@ -80,7 +81,8 @@ export function MapSettingsMapForm() {
 						name="name"
 						type="text"
 						autoComplete="off"
-						label={t('maps.settings.map.name')}
+						label={t('maps.settings.default.name')}
+						placeholder={t('maps.settings.default.placeholders.name')}
 						isDisabled={pending}
 					/>
 					<Button

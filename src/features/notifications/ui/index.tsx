@@ -28,8 +28,6 @@ export function NotificationsModule() {
 		shallow
 	);
 
-	console.log(errorsById);
-
 	const newErrorsList = useMemo(() => {
 		return errorsList.filter(
 			(errorHash) =>
@@ -72,7 +70,13 @@ export function NotificationsModule() {
 		>
 			{errorsElements.map((error) => {
 				return (
-					<MapOverlayBox key={error.id} pos="relative" bg="red.100" p={2}>
+					<MapOverlayBox
+						key={error.id}
+						pos="relative"
+						bg="red.100"
+						p={2}
+						sx={{ 'z-index': 'var(--map-overlay-notification-z)' }}
+					>
 						<Alert
 							status="error"
 							display="flex"

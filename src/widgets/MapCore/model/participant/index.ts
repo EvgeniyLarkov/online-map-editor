@@ -1,12 +1,13 @@
 import { create } from 'zustand';
-import { MapParticipantStore } from './types';
+import { MapParticipantStoreType } from './types';
 
-export const useMapParticipantStore = create<MapParticipantStore>((set) => ({
+export const MapParticipantStore = create<MapParticipantStoreType>((set) => ({
 	hash: null,
 	mapHash: null,
 	userHash: null,
 	name: null,
 	type: null,
+	participantHash: null,
 	status: null,
 	special_permissions: null,
 	version: null,
@@ -22,6 +23,7 @@ export const useMapParticipantStore = create<MapParticipantStore>((set) => ({
 				type: null,
 				status: null,
 				special_permissions: null,
+				participantHash: null,
 				version: null,
 				createdAt: null,
 			};

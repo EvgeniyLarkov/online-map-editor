@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { UnsuccssesRequest } from 'shared/api/types';
-import { SessionStorage } from 'entities/session';
+import { SessionStore } from 'entities/session';
 import { Button, Flex } from '@chakra-ui/react';
 import { FieldInput } from 'shared/uikit';
-import { useUserStore } from 'entities/user';
+import { UserStore } from 'entities/user';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { makeLogin } from '../../model/login';
 import { validationShema } from '../../model/loginFormSchema';
@@ -24,8 +24,8 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 	const [loginPending, setLoginPending] = useState(false);
 
 	const initialValues: FormValues = { email: '', password: '' };
-	const setSessionData = SessionStorage((session) => session.setSessionData);
-	const setUserData = useUserStore((user) => user.update);
+	const setSessionData = SessionStore((session) => session.setSessionData);
+	const setUserData = UserStore((user) => user.update);
 
 	const handleSetServerError = (
 		result: UnsuccssesRequest,
@@ -57,7 +57,7 @@ export function LoginForm({ successCallback }: LoginBoxInterface) {
 
 				if (isSuccessRequest(result)) {
 					successCallback();
-					setUserData(result.user);
+					if (result.user) setUserData(result.user);
 				} else {
 					handleSetServerError(result, formikHelpers);
 				}

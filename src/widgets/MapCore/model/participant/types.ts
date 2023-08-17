@@ -2,6 +2,7 @@ export interface MapParticipant {
 	hash: string | null;
 	mapHash: string | null;
 	userHash: string | null;
+	participantHash: string | null;
 	name: string | null;
 	type: mapParticipantTypes | null;
 	status: mapParticipantStatuses | null;
@@ -34,7 +35,8 @@ export type mapParticipantStatuses =
 
 type MapParticipantStoreActions = {
 	clear: () => void;
-	set: (data: MapParticipant) => void;
+	set: (data: Partial<MapParticipant>) => void;
 };
 
-export type MapParticipantStore = MapParticipant & MapParticipantStoreActions;
+export type MapParticipantStoreType = MapParticipant &
+	MapParticipantStoreActions;

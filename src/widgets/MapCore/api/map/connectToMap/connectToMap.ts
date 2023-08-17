@@ -1,4 +1,4 @@
-import { defaultErrorHandlingMiddleware, queryRaw } from 'shared/api';
+import { defaultErrorHandlingMiddleware } from 'shared/api';
 import { queryWithMiddleware } from 'shared/common/queryWithMiddleware';
 import { unauthorizedMiddleware } from 'entities/session';
 import {

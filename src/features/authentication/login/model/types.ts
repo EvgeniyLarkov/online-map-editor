@@ -1,4 +1,4 @@
-import { UserDto } from 'entities/user/model/types';
+import { UserDto } from 'shared/types/user';
 
 export type LoginRequestDto = {
 	email: string;

@@ -1,4 +1,4 @@
-export { useMapParticipantStore } from './participant';
+export { MapParticipantStore } from './participant';
 export { useMapPermissionsStore } from './permissions';
 export { useMapUIStore } from './ui';
 
@@ -17,3 +17,5 @@ export {
 	type ParticipantMapPermissions,
 	type mapsEditPermissions,
 } from './permissions/types';
+
+export { mapParticipantNameValidation } from './participant/validation';

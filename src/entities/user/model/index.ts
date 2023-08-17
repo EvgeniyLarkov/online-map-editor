@@ -10,7 +10,7 @@ interface UserStore extends UserStoreInterface {
 	clear: () => void;
 }
 
-export const useUserStore = create<UserStore>()(
+export const UserStore = create<UserStore>()(
 	persist(
 		(set) => ({
 			id: null,

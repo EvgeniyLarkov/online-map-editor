@@ -1,5 +1,6 @@
 :root {
     --map-overlay-menu-z: 500;
+    --map-overlay-notification-z: 1500000;
 }
 
 *,

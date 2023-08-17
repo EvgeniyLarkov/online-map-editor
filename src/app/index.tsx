@@ -1,4 +1,4 @@
-import { SessionStorage } from 'entities/session';
+import { SessionStore } from 'entities/session';
 import { router } from 'pages';
 import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
@@ -10,7 +10,7 @@ import {
 } from 'shared/api/transport/websockets/types';
 
 function App() {
-	const { isAuthorized, key, anonId, setSessionData } = SessionStorage(
+	const { isAuthorized, key, anonId, setSessionData } = SessionStore(
 		(session) => ({
 			isAuthorized: session.isAuthorized,
 			key: session.accessToken,

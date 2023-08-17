@@ -1,14 +1,14 @@
 import React from 'react';
 import { MenuItem } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { SessionStorage } from 'entities/session';
-import { useUserStore } from 'entities/user';
+import { SessionStore } from 'entities/session';
+import { UserStore } from 'entities/user';
 
 export function MenuLogoutListItem() {
 	const { t } = useTranslation();
 
-	const dropUserSession = SessionStorage((session) => session.clear);
-	const dropUserData = useUserStore((user) => user.clear);
+	const dropUserSession = SessionStore((session) => session.clear);
+	const dropUserData = UserStore((user) => user.clear);
 
 	const handleLogoutUser = () => {
 		dropUserData();

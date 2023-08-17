@@ -3,7 +3,9 @@ import axios, { AxiosError } from 'axios';
 import { nanoid } from 'nanoid';
 import { OMEError, WsError } from 'shared/stores/errors';
 import { isWsError } from './isWsError';
-
+/**
+ * OME: Transforms any kind of error to unified open map editor error
+ */
 export function transformOMEError(
 	error: AxiosError | Error | WsError | unknown
 ): OMEError {

@@ -1,6 +1,7 @@
 import { useSockets } from 'shared/api/transport';
 import { useCallback } from 'react';
-import { ChangeMapActionDto, MapActionDto, mapsActionNames } from '../types';
+import { ChangeMapActionDto, MapActionDto } from 'entities/map-actions';
+import { mapsActionNames } from '../types';
 
 export const useEmit = () => {
 	const { send } = useSockets(({ emit }) => ({

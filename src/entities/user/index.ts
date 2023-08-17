@@ -1,1 +1,1 @@
-export { useUserStore } from './model';
+export { UserStore } from './model';
