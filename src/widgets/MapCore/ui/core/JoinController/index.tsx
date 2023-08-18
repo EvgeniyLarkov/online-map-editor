@@ -4,13 +4,11 @@ import {
 	connectToMapLogined,
 	connectToMapUnlogined,
 } from 'widgets/MapCore/api';
-import {
-	MapParticipantStore,
-	useMapPermissionsStore,
-} from 'widgets/MapCore/model';
 import { OMEError } from 'shared/stores/errors';
 import { useTranslation } from 'react-i18next';
 import { SessionStore } from 'entities/session';
+import { MapParticipantPermissionsStore } from 'entities/map-participant-permissions';
+import { MapParticipantStore } from 'entities/map-participant';
 import { MapCore } from '../MapCore';
 import { ControllerWarnScreen } from './ui/ControllerWarnPlaceholder';
 import { ControllerLoadingScreen } from './ui/ControllerLoadingPlaceholder';
@@ -25,10 +23,12 @@ export function MapJoinController({ mapHash }: { mapHash?: string }) {
 		setMapData: mapData.update,
 	}));
 
-	const { canView, setPermissions } = useMapPermissionsStore((store) => ({
-		canView: store.view,
-		setPermissions: store.set,
-	}));
+	const { canView, setPermissions } = MapParticipantPermissionsStore(
+		(store) => ({
+			canView: store.view,
+			setPermissions: store.set,
+		})
+	);
 
 	const { setParticipant } = MapParticipantStore((store) => ({
 		setParticipant: store.set,

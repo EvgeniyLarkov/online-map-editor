@@ -1,7 +1,7 @@
 import {
 	mapParticipantStatuses,
 	mapParticipantTypes,
-} from 'widgets/MapCore/model';
+} from 'entities/map-participant';
 
 export class ChangeMapParticipantDto {
 	mapHash: string;

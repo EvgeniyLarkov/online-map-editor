@@ -1,16 +1,20 @@
+import { WithNull } from 'shared/types';
+
 export interface MapParticipant {
-	hash: string | null;
-	mapHash: string | null;
-	userHash: string | null;
-	participantHash: string | null;
-	name: string | null;
-	type: mapParticipantTypes | null;
-	status: mapParticipantStatuses | null;
-	special_permissions: Record<string, unknown> | null;
-	version: number | null;
-	createdAt: Date | null;
-	deletedAt?: Date | null;
+	hash: string;
+	mapHash: string;
+	userHash: string;
+	participantHash: string;
+	name: string;
+	type: mapParticipantTypes;
+	status: mapParticipantStatuses;
+	special_permissions: Record<string, unknown>;
+	version: number;
+	createdAt: Date;
+	deletedAt?: Date;
 }
+
+type MapParticipantVariables = WithNull<MapParticipant>;
 
 export const MAP_PARTICIPANT_TYPE = {
 	viewer: 0,
@@ -38,5 +42,5 @@ type MapParticipantStoreActions = {
 	set: (data: Partial<MapParticipant>) => void;
 };
 
-export type MapParticipantStoreType = MapParticipant &
+export type MapParticipantStoreType = MapParticipantVariables &
 	MapParticipantStoreActions;

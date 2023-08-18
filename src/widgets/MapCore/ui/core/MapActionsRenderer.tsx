@@ -1,8 +1,5 @@
 import { shallow } from 'zustand/shallow';
-import {
-	MAP_ACTION_DRAGGABLES,
-	useMapActionsStore,
-} from 'entities/map-actions';
+import { MAP_ACTION_DRAGGABLES, MapActionsStore } from 'entities/map-actions';
 import React from 'react';
 // import { useMapUIStore } from 'widgets/MapCore/model/ui';
 // import { MAP_UI_MODE } from 'widgets/MapCore/model/ui/types';
@@ -14,7 +11,7 @@ import { GetMapActionByType } from '../mapActions/getMapActionByType';
 import { ActionMenu } from '../mapActions';
 
 function MapActionsRendererPure() {
-	const { actionsList, actionsByHash } = useMapActionsStore(
+	const { actionsList, actionsByHash } = MapActionsStore(
 		(state) => ({
 			actionsList: state.actionsList,
 			actionsByHash: state.actionsByHash,

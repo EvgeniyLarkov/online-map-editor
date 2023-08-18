@@ -1,4 +1,4 @@
-import { MAP_EDIT_PERMISSIONS } from 'widgets/MapCore/model';
+import { MAP_EDIT_PERMISSIONS } from 'entities/map-participant-permissions';
 import * as Yup from 'yup';
 
 export const mapPermissionEditRulesValidation = {

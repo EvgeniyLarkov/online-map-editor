@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoMapOutline, IoSettingsOutline } from 'react-icons/io5';
-import { useMapPermissionsStore } from 'widgets/MapCore/model';
+import { MapParticipantPermissionsStore } from 'entities/map-participant-permissions';
 import { MapSettingsIconButton } from './MapSettingsIconButton';
 import {
 	MAP_SETTINGS_MENU_CATEGORIES,
@@ -30,7 +30,7 @@ export function MapSettingsSidemenu() {
 	}));
 
 	const { canChangeMapDescription, canChangeMapProperties } =
-		useMapPermissionsStore((state) => ({
+		MapParticipantPermissionsStore((state) => ({
 			canChangeMapProperties: state.change_map_properties,
 			canChangeMapDescription: state.change_map_description,
 		}));

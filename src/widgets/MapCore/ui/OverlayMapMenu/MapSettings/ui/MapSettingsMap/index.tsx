@@ -9,11 +9,6 @@ import {
 	FieldRadioStack,
 	FieldTextarea,
 } from 'shared/uikit';
-import {
-	MAP_EDIT_PERMISSIONS,
-	MapParticipantStore,
-	mapsEditPermissions,
-} from 'widgets/MapCore/model';
 import * as Yup from 'yup';
 import {
 	ChangeMapDto,
@@ -34,6 +29,11 @@ import {
 	mapPermissionAnonymousViewValidation,
 	mapPermissionEditRulesValidation,
 } from 'entities/map-permissions';
+import {
+	MAP_EDIT_PERMISSIONS,
+	mapsEditPermissions,
+} from 'entities/map-participant-permissions';
+import { MapParticipantStore } from 'entities/map-participant';
 
 type FormValues = {
 	name: string;

@@ -1,0 +1,1 @@
+export { MapParticipantsStore } from './model';

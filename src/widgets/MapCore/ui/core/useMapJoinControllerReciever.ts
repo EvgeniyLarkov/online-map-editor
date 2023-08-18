@@ -1,7 +1,7 @@
 import { shallow } from 'zustand/shallow';
 import React from 'react';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types';
-import { useMapActionsStore } from 'entities/map-actions';
+import { MapActionsStore } from 'entities/map-actions';
 import { useSockets } from 'shared/api/transport';
 import { useEmit } from 'widgets/MapCore/api';
 import { JoinMapResponseDTO } from './RecieveController/types';
@@ -10,8 +10,9 @@ export function useMapJoinController(mapHash: string | null) {
 	const [connectedMap, setConnectedMap] = React.useState<string | null>(null);
 	const [connectingMap, setConnectingMap] = React.useState<boolean>(false);
 
-	const { addActions } = useMapActionsStore((state) => ({
+	const { addActions, clearActions } = MapActionsStore((state) => ({
 		addActions: state.add,
+		clearActions: state.clear,
 	}));
 
 	const sendEvent = useEmit();
@@ -24,14 +25,6 @@ export function useMapJoinController(mapHash: string | null) {
 	);
 
 	React.useEffect(() => {
-		console.log(
-			'!!!!!!!!!!!!!!!!!',
-			connectedMap,
-			connectingMap,
-			mapHash,
-			mapHash !== connectedMap
-		);
-
 		if (mapHash && !connectingMap && connectedMap !== mapHash) {
 			setConnectingMap(true);
 			sendEvent(MAP_EVENTS.join_map, mapHash);
@@ -39,6 +32,7 @@ export function useMapJoinController(mapHash: string | null) {
 
 		return () => {
 			if (connectedMap) {
+				clearActions();
 				sendEvent(MAP_EVENTS.leave_map, connectedMap);
 				setConnectingMap(false);
 			}
@@ -47,7 +41,6 @@ export function useMapJoinController(mapHash: string | null) {
 
 	React.useEffect(() => {
 		const onGetActionsListener = (data: JoinMapResponseDTO) => {
-			console.log(data);
 			addActions(data.actions);
 			setConnectedMap(data.mapHash);
 			setConnectingMap(false);

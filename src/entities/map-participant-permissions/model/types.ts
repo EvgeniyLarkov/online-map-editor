@@ -10,7 +10,7 @@ type MAP_EDIT_PERMISSIONS_KEYS = keyof typeof MAP_EDIT_PERMISSIONS;
 export type mapsEditPermissions =
 	typeof MAP_EDIT_PERMISSIONS[MAP_EDIT_PERMISSIONS_KEYS];
 
-export type ParticipantMapPermissions = {
+export type MapParticipantPermissions = {
 	view: boolean | null;
 	edit_actions: boolean | null;
 	drop_actions: boolean | null;
@@ -25,8 +25,8 @@ export type ParticipantMapPermissions = {
 
 type MapPermissionsStoreActions = {
 	clear: () => void;
-	set: (data: Partial<ParticipantMapPermissions>) => void;
+	set: (data: Partial<MapParticipantPermissions>) => void;
 };
 
-export type MapParticipantStore = ParticipantMapPermissions &
+export type MapParticipantPermissionsStoreType = MapParticipantPermissions &
 	MapPermissionsStoreActions;

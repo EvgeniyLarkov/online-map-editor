@@ -1,5 +1,5 @@
 import { MapAction } from 'entities/map-actions';
-import { MapParticipant } from 'widgets/MapCore/model';
+import { MapParticipant } from 'entities/map-participant';
 
 export type JoinMapResponseDTO = {
 	actions: MapAction[];

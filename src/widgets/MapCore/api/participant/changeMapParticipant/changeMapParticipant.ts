@@ -1,6 +1,6 @@
 import { defaultErrorHandlingMiddleware } from 'shared/api';
 import { queryWithMiddleware } from 'shared/common/queryWithMiddleware';
-import { MapParticipant } from 'widgets/MapCore/model';
+import { MapParticipant } from 'entities/map-participant';
 import { ChangeMapParticipantDto } from './types';
 import {
 	changeMapParticipantLoginedEndpoint,

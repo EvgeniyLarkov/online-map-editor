@@ -31,6 +31,7 @@ export type MapAction = {
 type MapActionsStoreActions = {
 	add: (data: MapAction | MapAction[]) => void;
 	drop: (data: MapAction | MapAction[]) => void;
+	clear: () => void;
 };
 
 type MapActionsStoreVariables = {
@@ -38,7 +39,8 @@ type MapActionsStoreVariables = {
 	actionsByHash: Record<string, MapAction>;
 };
 
-export type MapActionsStore = MapActionsStoreVariables & MapActionsStoreActions;
+export type MapActionsStoreType = MapActionsStoreVariables &
+	MapActionsStoreActions;
 
 export const MAP_ACTION_DRAGGABLES = {
 	[MAP_ACTION_TYPES.marker]: true,

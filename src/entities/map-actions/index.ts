@@ -1,4 +1,4 @@
-export { useMapActionsStore } from './model';
+export { MapActionsStore } from './model';
 export {
 	MAP_ACTION_TYPES,
 	type mapActionTypes,

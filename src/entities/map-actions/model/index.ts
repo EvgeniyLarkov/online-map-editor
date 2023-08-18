@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { MapAction, MapActionsStore } from './types';
+import { MapAction, MapActionsStoreType } from './types';
 
-export const useMapActionsStore = create<MapActionsStore>((set) => ({
+export const MapActionsStore = create<MapActionsStoreType>((set) => ({
 	actionsList: [],
 	actionsByHash: {},
 	add: (actions) =>
@@ -72,5 +72,5 @@ export const useMapActionsStore = create<MapActionsStore>((set) => ({
 
 			return newState;
 		}),
-	empty: () => set({ actionsByHash: {}, actionsList: [] }),
+	clear: () => set({ actionsByHash: {}, actionsList: [] }),
 }));

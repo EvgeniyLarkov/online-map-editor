@@ -4,16 +4,16 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import { SessionStore } from 'entities/session';
 import { Button, Flex } from '@chakra-ui/react';
 import { FieldInput } from 'shared/uikit';
-import {
-	mapParticipantNameValidation,
-	MapParticipantStore,
-} from 'widgets/MapCore/model';
 import * as Yup from 'yup';
 import {
 	changeMapParticipantLogined,
 	changeMapParticipantUnlogined,
 } from 'widgets/MapCore/api/participant/changeMapParticipant';
 import { MapStore } from 'entities/map';
+import {
+	MapParticipantStore,
+	mapParticipantNameValidation,
+} from 'entities/map-participant';
 
 type FormValues = {
 	name: string;

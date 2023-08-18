@@ -13,6 +13,6 @@ export {
 export {
 	mapPermissionAnonymousViewValidation,
 	mapPermissionEditRulesValidation,
-} from './model/validation';
+} from './validation';
 
 export { type ChangeMapPermissionsDto } from './api/types';

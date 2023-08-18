@@ -1,11 +1,11 @@
 import { shallow } from 'zustand/shallow';
-import { MapAction, useMapActionsStore } from 'entities/map-actions';
+import { MapAction, MapActionsStore } from 'entities/map-actions';
 import React from 'react';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { useSockets } from 'shared/api/transport';
 
 export function useEventRecieveController() {
-	const { addActions, dropActions } = useMapActionsStore(
+	const { addActions, dropActions } = MapActionsStore(
 		(state) => ({
 			addActions: state.add,
 			dropActions: state.drop,
