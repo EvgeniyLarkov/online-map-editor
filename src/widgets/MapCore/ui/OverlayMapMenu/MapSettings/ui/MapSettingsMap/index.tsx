@@ -221,7 +221,7 @@ export function MapSettingsMapForm({
 
 	if (canChangeProperties && !loaded) {
 		return (
-			<Center h="100px" w="100%">
+			<Center h="200px" w="100%">
 				<Spinner size="md" />
 			</Center>
 		);

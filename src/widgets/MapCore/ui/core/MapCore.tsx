@@ -52,6 +52,7 @@ function MapCorePure() {
 	}));
 	const [mapRef, setMapRef] = React.useState<Map | null>(null);
 	const [initialCoords, initialZoom] = useMapCacheController(mapRef, hash);
+
 	// Handles Recieving events via websockets
 	useEventRecieveController();
 	useMapJoinController(hash);

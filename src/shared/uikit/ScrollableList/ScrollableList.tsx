@@ -8,7 +8,8 @@ type ScrollableList<T> = {
 		options: IPaginationOptions,
 		additionalOptions: RequestAdditionalOptions
 	) => Promise<T>;
-	transformResults: (data: T) => Array<React.ReactNode>;
+	onFetch: (data: T) => number;
+	items: React.ReactNode[];
 	page?: number;
 	limit?: number;
 	noResultsPlaceholder?: React.ReactNode | string;
@@ -16,15 +17,13 @@ type ScrollableList<T> = {
 };
 
 export function ScrollableList<T>(data: ScrollableList<T>) {
-	const { fetchFunction, transformResults, page, limit, scrollThreeshold } =
-		data;
+	const { fetchFunction, onFetch, page, limit, scrollThreeshold, items } = data;
 
 	const [scrollThs] = useState(
 		typeof scrollThreeshold !== 'undefined' ? scrollThreeshold : 100
 	);
 	const [isLimitReached, setLimitReached] = useState(false);
 	const [fetchingInProgress, setFetchingInProgress] = useState(false);
-	const [ListItems, setListItems] = useState<React.ReactNode[]>([]);
 	// const listRef = useRef<HTMLDivElement>(null);
 
 	const [currentPage, setCurrentPage] = useState(
@@ -46,9 +45,7 @@ export function ScrollableList<T>(data: ScrollableList<T>) {
 				}
 			).then((result) => {
 				setFetchingInProgress(false);
-				const transformedResults = transformResults(result);
-
-				const resultsLength = transformedResults.length;
+				const resultsLength = onFetch(result);
 
 				if (resultsLength < currentLimit) {
 					setLimitReached(true);
@@ -56,8 +53,6 @@ export function ScrollableList<T>(data: ScrollableList<T>) {
 					setCurrentPage(currentPage + 1);
 					setLimitReached(false);
 				}
-
-				setListItems([...ListItems, ...transformedResults]);
 			});
 		}
 	};
@@ -99,7 +94,7 @@ export function ScrollableList<T>(data: ScrollableList<T>) {
 			overflow="auto"
 			onScroll={handleListScroll}
 		>
-			{...ListItems}
+			{...items}
 		</Flex>
 	);
 }
