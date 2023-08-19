@@ -6,6 +6,7 @@ export interface MapParticipant {
 	userHash: string;
 	participantHash: string;
 	name: string;
+	avatar: string | null;
 	type: mapParticipantTypes;
 	status: mapParticipantStatuses;
 	special_permissions: Record<string, unknown>;

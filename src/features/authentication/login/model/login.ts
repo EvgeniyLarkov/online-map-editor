@@ -1,5 +1,5 @@
 import { makeQuery } from 'shared/api';
-import { userLoginEndpoint } from 'entities/session/api/endpoints';
+import { userLoginEndpoint } from 'entities/session/api/userLogin.endpoint';
 import { isSuccessRequest } from 'shared/common/isSuccessRequest';
 import { LoginRequestDto, UserLoginResponseDto } from './types';
 

@@ -75,6 +75,7 @@ function MapCorePure() {
 				id="map"
 				scrollWheelZoom
 				ref={setMapRef}
+				zoomControl={false}
 			>
 				<TileLayer attribution={name || ''} url={mapInitialTileLayer} />
 				<MapActionsRenderer />

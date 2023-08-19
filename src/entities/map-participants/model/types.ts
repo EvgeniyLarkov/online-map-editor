@@ -8,7 +8,7 @@ export type MapParticipantsVariables = {
 type MapParticipantsStoreActions = {
 	add: (data: MapParticipant | MapParticipant[]) => void;
 	drop: (
-		data: MapParticipant | MapParticipant[] | MapParticipant['hash']
+		data: MapParticipant | MapParticipant[] | MapParticipant['participantHash']
 	) => void;
 	clear: () => void;
 };

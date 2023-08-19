@@ -1,4 +1,4 @@
-import { SessionStore } from 'entities/session';
+import { SessionStore, getAnonId } from 'entities/session';
 import { router } from 'pages';
 import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
@@ -35,16 +35,32 @@ function App() {
 	}));
 
 	const getToken = () => key || '';
-	const getAnonId = () => anonId || '';
-
-	const userConnected = React.useMemo(() => isConnected(), [isConnected]);
+	const getAnonIdFromStore = () => anonId || '';
 
 	if (isAuthorized) {
 		if (!socketConnecting && !isConnected())
 			handleConnectToSockets(getToken, SOCKET_NAMESPACES.map);
-	} else if (!socketConnecting && !isConnected()) {
-		handleConnectToSocketsAnon(getAnonId, SOCKET_NAMESPACES.map);
+	} else if (!socketConnecting && !isConnected() && anonId) {
+		handleConnectToSocketsAnon(getAnonIdFromStore, SOCKET_NAMESPACES.map);
 	}
+
+	useEffect(() => {
+		console.log(anonId, isAuthorized);
+
+		if (!isAuthorized && !anonId) {
+			console.log('fetching anonId');
+			const req = getAnonId();
+			req.then((data) => {
+				setSessionData({ anonId: data.data });
+			});
+
+			return () => {
+				req.abort();
+			};
+		}
+
+		return () => {};
+	}, [anonId, isAuthorized, setSessionData]);
 
 	useEffect(() => {
 		const onRecieveConnectionData = (data: onConnectedResponseDTO) => {

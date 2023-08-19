@@ -96,7 +96,9 @@ export const queryRaw = function queryRaw<T, Res>(
 		axiosOptions.headers.Authorization = `Bearer ${token}`;
 	} else {
 		const anonymousId = JSON.parse(localStorage.getItem('session-store') || '')
-			.state?.anonymousId;
+			.state?.anonId;
+
+		console.log(anonymousId);
 
 		axiosOptions.headers['anonymous-id'] = anonymousId;
 	}

@@ -44,6 +44,8 @@
                 "tsx": "never"
             }
         ],
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "error",
         "react/jsx-props-no-spreading": "off",
         "no-shadow": "off",
         "react/require-default-props": "off",

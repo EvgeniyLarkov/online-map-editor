@@ -34,12 +34,13 @@ export function MapJoinController({ mapHash }: { mapHash?: string }) {
 		setParticipant: store.set,
 	}));
 
-	const { logined } = SessionStore((state) => ({
+	const { logined, anonId } = SessionStore((state) => ({
 		logined: state.isAuthorized,
+		anonId: state.anonId,
 	}));
 
 	React.useEffect(() => {
-		if (mapHash) {
+		if (mapHash && (logined || anonId)) {
 			setLoading(true);
 
 			const fetchPromise = logined

@@ -17,7 +17,7 @@ export const MapParticipantsStore = create<MapParticipantsStoreType>((set) => ({
 			const itemsToReplace: MapParticipant[] = [];
 
 			items.forEach((action) => {
-				const exist = state.paricipantsByHash[action.hash];
+				const exist = state.paricipantsByHash[action.participantHash];
 
 				if (exist) {
 					itemsToReplace.push(action);
@@ -28,14 +28,14 @@ export const MapParticipantsStore = create<MapParticipantsStoreType>((set) => ({
 
 			if (itemsToAdd.length > 0) {
 				itemsToAdd.forEach((action) => {
-					newState.paricipantsByHash[action.hash] = action;
-					newState.paricipantsList.push(action.hash);
+					newState.paricipantsByHash[action.participantHash] = action;
+					newState.paricipantsList.push(action.participantHash);
 				});
 			}
 
 			if (itemsToReplace.length > 0) {
 				itemsToReplace.forEach((action) => {
-					newState.paricipantsByHash[action.hash] = action;
+					newState.paricipantsByHash[action.participantHash] = action;
 				});
 			}
 
@@ -52,7 +52,8 @@ export const MapParticipantsStore = create<MapParticipantsStoreType>((set) => ({
 			const itemsToDrop: string[] = [];
 
 			items.forEach((action) => {
-				const pHash = typeof action === 'string' ? action : action.hash;
+				const pHash =
+					typeof action === 'string' ? action : action.participantHash;
 
 				const exist = state.paricipantsByHash[pHash];
 

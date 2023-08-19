@@ -4,6 +4,7 @@ import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { MapActionsStore } from 'entities/map-actions';
 import { useSockets } from 'shared/api/transport';
 import { useEmit } from 'widgets/MapCore/api';
+import { MapParticipantsStore } from 'entities/map-participants';
 import { JoinMapResponseDTO } from './RecieveController/types';
 
 export function useMapJoinController(mapHash: string | null) {
@@ -14,6 +15,13 @@ export function useMapJoinController(mapHash: string | null) {
 		addActions: state.add,
 		clearActions: state.clear,
 	}));
+
+	const { addParticipants, clearParticipants } = MapParticipantsStore(
+		(state) => ({
+			addParticipants: state.add,
+			clearParticipants: state.clear,
+		})
+	);
 
 	const sendEvent = useEmit();
 
@@ -33,15 +41,17 @@ export function useMapJoinController(mapHash: string | null) {
 		return () => {
 			if (connectedMap) {
 				clearActions();
+				clearParticipants();
 				sendEvent(MAP_EVENTS.leave_map, connectedMap);
 				setConnectingMap(false);
 			}
 		};
-	}, [mapHash, sendEvent, connectingMap, connectedMap]);
+	}, [mapHash, sendEvent, connectingMap, connectedMap, clearActions]);
 
 	React.useEffect(() => {
 		const onGetActionsListener = (data: JoinMapResponseDTO) => {
 			addActions(data.actions);
+			addParticipants(data.participants);
 			setConnectedMap(data.mapHash);
 			setConnectingMap(false);
 		};

@@ -5,3 +5,4 @@ export { FieldCheckbox } from './FieldCheckbox/FieldCheckbox';
 export { FieldRadioStack } from './FieldRadioStack';
 export { ScrollableList } from './ScrollableList/ScrollableList';
 export { MapOverlayBox } from './MapOverlayBox/MapOverlayBox';
+export { MapInvisibleOverlay } from './MapInvisibleOverlay/MapInvisibleOverlay';
