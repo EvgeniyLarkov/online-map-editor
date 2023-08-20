@@ -1,6 +1,7 @@
 export const MAP_SETTINGS_MENU_CATEGORIES = {
 	default: 'default',
 	map: 'map',
+	participants: 'participants',
 } as const;
 
 type MAP_SETTINGS_MENU_CATEGORIES_KEYS =

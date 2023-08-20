@@ -1,6 +1,9 @@
 :root {
     --map-overlay-menu-z: 500;
-    --map-overlay-notification-z: 1500000;
+    --map-overlay-first-stage-menu-z: 1400;
+    --map-overlay-second-stage-menu-z: 1500;
+    --map-overlay-notification-z: 2000;
+    /* Must be highest */
 }
 
 *,
@@ -37,4 +40,16 @@ body {
 #map {
     height: 100vh;
     width: 100vw;
+}
+
+.ome-main-menu {
+    z-index: var(--map-overlay-first-stage-menu-z);
+}
+
+.ome-secondary-menu {
+    z-index: var(--map-overlay-second-stage-menu-z);
+}
+
+.ome-notification-module {
+    z-index: var(--map-overlay-notification-z);
 }

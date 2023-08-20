@@ -57,7 +57,7 @@ export function NotificationsModule() {
 		return activeErrors.map((key) => {
 			return errorsById[key] || null;
 		});
-	}, [activeErrors]); // TO-DO
+	}, [activeErrors, errorsById]); // TO-DO
 
 	return (
 		<Flex
@@ -67,16 +67,11 @@ export function NotificationsModule() {
 			right={4}
 			bottom={4}
 			display={errorsElements.length > 0 ? 'flex' : 'none'}
+			className="ome-notification-module"
 		>
 			{errorsElements.map((error) => {
 				return (
-					<MapOverlayBox
-						key={error.id}
-						pos="relative"
-						bg="red.100"
-						p={2}
-						sx={{ 'z-index': 'var(--map-overlay-notification-z)' }}
-					>
+					<MapOverlayBox key={error.id} pos="relative" bg="red.100" p={2}>
 						<Alert
 							status="error"
 							display="flex"

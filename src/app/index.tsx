@@ -45,14 +45,13 @@ function App() {
 	}
 
 	useEffect(() => {
-		console.log(anonId, isAuthorized);
-
 		if (!isAuthorized && !anonId) {
-			console.log('fetching anonId');
 			const req = getAnonId();
-			req.then((data) => {
-				setSessionData({ anonId: data.data });
-			});
+			req
+				.then((data) => {
+					setSessionData({ anonId: data.data });
+				})
+				.catch(() => {});
 
 			return () => {
 				req.abort();

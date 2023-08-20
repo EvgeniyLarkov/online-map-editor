@@ -9,8 +9,13 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoMapOutline, IoSettingsOutline } from 'react-icons/io5';
+import {
+	IoMapOutline,
+	IoPeopleOutline,
+	IoSettingsOutline,
+} from 'react-icons/io5';
 import { MapParticipantPermissionsStore } from 'entities/map-participant-permissions';
+import { MapParticipantStore } from 'entities/map-participant';
 import { MapSettingsIconButton } from './MapSettingsIconButton';
 import {
 	MAP_SETTINGS_MENU_CATEGORIES,
@@ -19,6 +24,7 @@ import {
 import { MapSettingsUIStore } from '../model';
 import { MapSettingsMapForm } from './MapSettingsMap';
 import { MapSettingsDefaultForm } from './MapSettingsDefault';
+import { MapSettingsParticipants } from './MapSettingsParticipants';
 
 export function MapSettingsSidemenu() {
 	const { t } = useTranslation();
@@ -29,11 +35,25 @@ export function MapSettingsSidemenu() {
 		open: state.open,
 	}));
 
-	const { canChangeMapDescription, canChangeMapProperties } =
-		MapParticipantPermissionsStore((state) => ({
-			canChangeMapProperties: state.change_map_properties,
-			canChangeMapDescription: state.change_map_description,
-		}));
+	const {
+		canChangeMapDescription,
+		canChangeMapProperties,
+		canChangeParticipants,
+		canBanParticipants,
+		canInviteParticipants,
+		canChangeParticipantsPermissions,
+	} = MapParticipantPermissionsStore((state) => ({
+		canChangeMapProperties: !!state.change_map_properties,
+		canChangeMapDescription: !!state.change_map_description,
+		canChangeParticipants: !!state.modify_participants,
+		canBanParticipants: !!state.ban_participants,
+		canInviteParticipants: !!state.invite_participants,
+		canChangeParticipantsPermissions: !!state.set_permissions,
+	}));
+
+	const { editorType } = MapParticipantStore((state) => ({
+		editorType: state.type,
+	}));
 
 	const setCategoryHandler = React.useCallback(
 		(cat: mapSettingsMenuCategoriesTypes) => () => {
@@ -43,7 +63,13 @@ export function MapSettingsSidemenu() {
 	);
 
 	return (
-		<Drawer placement="left" size="md" onClose={close} isOpen={opened}>
+		<Drawer
+			placement="left"
+			size="md"
+			onClose={close}
+			isOpen={opened}
+			id="ome-map-menu"
+		>
 			<DrawerOverlay />
 			<DrawerContent>
 				<DrawerHeader borderBottomWidth="1px">
@@ -79,6 +105,18 @@ export function MapSettingsSidemenu() {
 									onClick={setCategoryHandler(MAP_SETTINGS_MENU_CATEGORIES.map)}
 								/>
 							)}
+							<MapSettingsIconButton
+								selected={
+									category === MAP_SETTINGS_MENU_CATEGORIES.participants
+								}
+								message={t(
+									`maps.settings.${MAP_SETTINGS_MENU_CATEGORIES.participants}.label`
+								)}
+								icon={<IoPeopleOutline size="24px" />}
+								onClick={setCategoryHandler(
+									MAP_SETTINGS_MENU_CATEGORIES.participants
+								)}
+							/>
 						</Flex>
 						<Box h="100%" flex={1} p={4}>
 							{category === MAP_SETTINGS_MENU_CATEGORIES.default && (
@@ -86,7 +124,18 @@ export function MapSettingsSidemenu() {
 							)}
 							{category === MAP_SETTINGS_MENU_CATEGORIES.map && (
 								<MapSettingsMapForm
-									canChangeProperties={!!canChangeMapProperties}
+									canChangeProperties={canChangeMapProperties}
+								/>
+							)}
+							{category === MAP_SETTINGS_MENU_CATEGORIES.participants && (
+								<MapSettingsParticipants
+									editorType={editorType}
+									canChangeParticipants={canChangeParticipants}
+									canBanParticipants={canBanParticipants}
+									canInviteParticipants={canInviteParticipants}
+									canChangeParticipantsPermissions={
+										canChangeParticipantsPermissions
+									}
 								/>
 							)}
 						</Box>
