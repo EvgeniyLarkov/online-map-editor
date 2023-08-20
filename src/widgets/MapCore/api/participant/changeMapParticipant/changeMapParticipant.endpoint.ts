@@ -8,7 +8,6 @@ export const changeMapParticipantLoginedEndpoint: EndpointObject = {
 };
 
 export const changeMapParticipantUnloginedEndpoint: EndpointObject = {
-	url: ({ hash = 'default' }: EndpointParameters) =>
-		`maps/participant/${hash}/unlogined`,
+	url: ({ hash = 'default' }: EndpointParameters) => `maps/participant/${hash}`,
 	method: 'Patch',
 };

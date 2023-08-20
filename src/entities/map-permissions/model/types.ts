@@ -1,5 +1,5 @@
+import { mapsEditPermissions } from 'entities/map-participant-permissions';
 import { WithNull } from 'shared/types';
-import { mapsEditPermissions } from 'widgets/MapCore/model'; // TO-DO move entity to this foler
 
 export class MapPermissionEntity {
 	hash: string;

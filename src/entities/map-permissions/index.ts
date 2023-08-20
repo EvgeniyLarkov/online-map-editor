@@ -1,5 +1,5 @@
 export { MapPermissionsStore } from './model';
-export { type MapPermissions } from './model/types';
+export { type MapPermissions, type MapPermissionEntity } from './model/types';
 export {
 	getMapPermissionsLogined,
 	getMapPermissionsUnlogined,

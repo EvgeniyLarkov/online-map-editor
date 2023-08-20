@@ -73,7 +73,7 @@
         "import/prefer-default-export": "off",
         "react/prop-types": "off",
         "no-empty-function": "off",
-        "@typescript-eslint/no-empty-function": "error"
+        "@typescript-eslint/no-empty-function": "off"
     },
     "settings": {
         "import/resolver": {
