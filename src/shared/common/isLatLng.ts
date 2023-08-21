@@ -1,11 +1,10 @@
 import { LatLng } from 'leaflet';
+import { isLatLngAsObject } from './isLatLngAsObject';
+import { isLatLngTuple } from './isLatLngTuple';
 
 export function isLatLng(latlng: unknown): latlng is LatLng {
-	return (
-		Array.isArray(latlng) &&
-		typeof latlng[0] === 'number' &&
-		typeof latlng[1] === 'number' &&
-		Number.isFinite(latlng[0]) &&
-		Number.isFinite(latlng[1])
-	);
+	return Array.isArray(latlng)
+		? latlng.every((item) => isLatLngTuple(item)) ||
+				latlng.every((item) => isLatLngAsObject(item))
+		: isLatLngAsObject(latlng);
 }

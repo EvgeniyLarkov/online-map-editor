@@ -8,11 +8,9 @@ import { useTranslation } from 'react-i18next';
 import { MapOverlayBox } from 'shared/uikit';
 import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
 import { IoLocationOutline, IoSettingsOutline } from 'react-icons/io5';
+import { TbBackslash } from 'react-icons/tb';
 import { ActionsMenuIcon } from './ActionMenuButton';
-import {
-	MAP_SETTINGS_MENU_CATEGORIES,
-	MapSettingsUIStore,
-} from '../MapSettings';
+import { MapSettingsUIStore } from '../MapSettings';
 
 export function ActionsMenu() {
 	const { t } = useTranslation();
@@ -56,6 +54,12 @@ export function ActionsMenu() {
 					icon={<IoLocationOutline size="24px" />}
 					selected={selectedAction === MAP_ACTION_TYPES.marker}
 					onClick={onChangeActionClick(MAP_ACTION_TYPES.marker)}
+				/>
+				<ActionsMenuIcon
+					message={t(`maps.actions.names.${MAP_ACTION_TYPES.polyline}`)}
+					icon={<TbBackslash size="24px" />}
+					selected={selectedAction === MAP_ACTION_TYPES.polyline}
+					onClick={onChangeActionClick(MAP_ACTION_TYPES.polyline)}
 				/>
 				<ActionsMenuIcon
 					message={t(`maps.settings.default.label`)}

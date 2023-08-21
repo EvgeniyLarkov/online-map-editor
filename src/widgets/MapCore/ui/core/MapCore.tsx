@@ -4,7 +4,7 @@ import { MapStore } from 'entities/map';
 import { Map } from 'leaflet';
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { EventDispatchController } from './EventDispatchController';
+import { EventDispatchController } from './DispatchController/EventDispatchController';
 import { useEventRecieveController } from './RecieveController/EventRecieveController';
 import { MapActionsRenderer } from './MapActionsRenderer';
 import { OverlayMapLayout } from '../OverlayMapMenu';

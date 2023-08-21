@@ -1,12 +1,15 @@
+import { OMEActionsData } from './action.types';
+
 export const MAP_ACTION_TYPES = {
 	initial_position: 0,
 	marker: 1,
+	polyline: 2,
 } as const;
 
 type MAP_ACTION_TYPES_KEYS = keyof typeof MAP_ACTION_TYPES;
 export type mapActionTypes = typeof MAP_ACTION_TYPES[MAP_ACTION_TYPES_KEYS];
 
-export type MapAction = {
+export type MapAction<T = OMEActionsData> = {
 	hash: string;
 
 	type: mapActionTypes;
@@ -17,7 +20,7 @@ export type MapAction = {
 
 	lng: number | null;
 
-	data?: Record<string, unknown>;
+	data?: T;
 
 	creatorHash: string;
 

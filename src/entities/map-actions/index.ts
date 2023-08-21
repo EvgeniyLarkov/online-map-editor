@@ -6,3 +6,10 @@ export {
 	MAP_ACTION_DRAGGABLES,
 } from './model/types';
 export { type MapActionDto, type ChangeMapActionDto } from './api/types';
+
+export {
+	isActionPolyline,
+	isActionMarker,
+	type MarkerData,
+	type PolylineData,
+} from './model/action.types';

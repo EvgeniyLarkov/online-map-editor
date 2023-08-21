@@ -3,7 +3,7 @@ import React from 'react';
 import { Marker, MarkerProps } from 'react-leaflet';
 import { isLatLng } from 'shared/common/isLatLng';
 
-export function LocationMarker({
+export function OMEMarker({
 	action,
 	children,
 	...rest
@@ -12,7 +12,7 @@ export function LocationMarker({
 } & React.PropsWithChildren &
 	Omit<MarkerProps, 'position'>) {
 	// TO-DO refactor types
-	const latlng = [action.lat, action.lng];
+	const latlng = { lat: action.lat, lng: action.lng };
 
 	return isLatLng(latlng) ? (
 		<Marker position={latlng} {...rest}>

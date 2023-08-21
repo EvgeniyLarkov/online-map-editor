@@ -75,6 +75,7 @@ const translation = {
 			actions: {
 				names: {
 					1: 'Маркер',
+					2: 'Линия',
 				},
 				tips: {
 					drop: 'Удалить',
