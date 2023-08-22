@@ -2,10 +2,12 @@ import {
 	MAP_ACTION_TYPES,
 	MapAction,
 	isActionMarker,
+	isActionPolygone,
 	isActionPolyline,
 } from 'entities/map-actions';
 import { OMEMarker } from './Marker/Marker';
 import { OMEPolyline } from './Polyline/Polyline';
+import { OMEPolygone } from './Editables';
 
 export function GetMapActionByType(action: MapAction) {
 	const { type } = action;
@@ -20,6 +22,10 @@ export function GetMapActionByType(action: MapAction) {
 
 	if (isActionPolyline(action)) {
 		return OMEPolyline;
+	}
+
+	if (isActionPolygone(action)) {
+		return OMEPolygone;
 	}
 
 	return null;

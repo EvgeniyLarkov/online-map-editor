@@ -1,7 +1,7 @@
 import { LatLng } from 'leaflet';
 import { MAP_ACTION_TYPES, MapAction } from './types';
 
-export type OMEActionsData = PolylineData | MarkerData;
+export type OMEActionsData = PolylineData | MarkerData | PolygoneData;
 
 export type DefaultActionsData = {
 	name?: string;
@@ -10,6 +10,10 @@ export type DefaultActionsData = {
 
 export type PolylineData = DefaultActionsData & {
 	coordinates: [LatLng, LatLng];
+};
+
+export type PolygoneData = DefaultActionsData & {
+	coordinates: LatLng[];
 };
 
 export type MarkerData = DefaultActionsData & Record<string, unknown>;
@@ -21,7 +25,13 @@ export const isActionPolyline = (
 };
 
 export const isActionMarker = (
-	action: MapAction<MarkerData>
+	action: MapAction
 ): action is MapAction<MarkerData> => {
 	return action.type === MAP_ACTION_TYPES.marker;
+};
+
+export const isActionPolygone = (
+	action: MapAction
+): action is MapAction<PolygoneData> => {
+	return action.type === MAP_ACTION_TYPES.polygone;
 };

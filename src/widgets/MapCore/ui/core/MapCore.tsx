@@ -10,6 +10,7 @@ import { MapActionsRenderer } from './MapActionsRenderer';
 import { OverlayMapLayout } from '../OverlayMapMenu';
 import { useMapCacheController } from './useMapCacheService';
 import { useMapJoinController } from './useMapJoinControllerReciever';
+import 'leaflet-editable';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());
@@ -57,17 +58,19 @@ function MapCorePure() {
 	useEventRecieveController();
 	useMapJoinController(hash);
 
+	// const editRef = React.useRef<{ startPolygon: () => void } | null>(null);
+	// const editPolygon = () => {
+	// 	if (editRef.current && editRef.current.startPolygon) {
+	// 		editRef.current.startPolygon();
+	// 	}
+	// };
+
 	const mapInitialTileLayer =
 		'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 
 	return (
 		<>
-			{mapRef ? (
-				<>
-					<DisplayPosition map={mapRef} />
-					<EventDispatchController map={mapRef} />
-				</>
-			) : null}
+			{mapRef ? <DisplayPosition map={mapRef} /> : null}
 			<OverlayMapLayout />
 			<MapContainer
 				center={initialCoords}
@@ -76,9 +79,11 @@ function MapCorePure() {
 				scrollWheelZoom
 				ref={setMapRef}
 				zoomControl={false}
+				editable
 			>
 				<TileLayer attribution={name || ''} url={mapInitialTileLayer} />
 				<MapActionsRenderer />
+				<EventDispatchController />
 			</MapContainer>
 		</>
 	);

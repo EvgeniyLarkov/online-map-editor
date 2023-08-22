@@ -7,7 +7,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapOverlayBox } from 'shared/uikit';
 import { MAP_UI_MODE, useMapUIStore } from 'widgets/MapCore/model';
-import { IoLocationOutline, IoSettingsOutline } from 'react-icons/io5';
+import {
+	IoLocationOutline,
+	IoSettingsOutline,
+	IoSquareSharp,
+} from 'react-icons/io5';
 import { TbBackslash } from 'react-icons/tb';
 import { ActionsMenuIcon } from './ActionMenuButton';
 import { MapSettingsUIStore } from '../MapSettings';
@@ -60,6 +64,12 @@ export function ActionsMenu() {
 					icon={<TbBackslash size="24px" />}
 					selected={selectedAction === MAP_ACTION_TYPES.polyline}
 					onClick={onChangeActionClick(MAP_ACTION_TYPES.polyline)}
+				/>
+				<ActionsMenuIcon
+					message={t(`maps.actions.names.${MAP_ACTION_TYPES.polygone}`)}
+					icon={<IoSquareSharp size="24px" />}
+					selected={selectedAction === MAP_ACTION_TYPES.polygone}
+					onClick={onChangeActionClick(MAP_ACTION_TYPES.polygone)}
 				/>
 				<ActionsMenuIcon
 					message={t(`maps.settings.default.label`)}

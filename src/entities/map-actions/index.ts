@@ -10,6 +10,8 @@ export { type MapActionDto, type ChangeMapActionDto } from './api/types';
 export {
 	isActionPolyline,
 	isActionMarker,
+	isActionPolygone,
 	type MarkerData,
 	type PolylineData,
+	type PolygoneData,
 } from './model/action.types';

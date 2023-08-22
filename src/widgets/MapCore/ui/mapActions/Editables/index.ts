@@ -1,0 +1,1 @@
+export { OMEPolygone } from './Polygone';
