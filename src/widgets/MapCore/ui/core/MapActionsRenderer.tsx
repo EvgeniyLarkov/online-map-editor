@@ -1,13 +1,12 @@
 import { shallow } from 'zustand/shallow';
 import { MAP_ACTION_DRAGGABLES, MapActionsStore } from 'entities/map-actions';
 import React from 'react';
-// import { useMapUIStore } from 'widgets/MapCore/model/ui';
-// import { MAP_UI_MODE } from 'widgets/MapCore/model/ui/types';
-import { LeafletEvent } from 'leaflet';
+import { LatLng, LeafletEvent } from 'leaflet';
 import { useEmit } from 'widgets/MapCore/api';
 import { MapStore } from 'entities/map';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types';
 import { useMap } from 'react-leaflet';
+import { OMEActionsData } from 'entities/map-actions/model/action.types';
 import { GetMapActionByType } from '../mapActions/getMapActionByType';
 import { ActionMenu } from '../mapActions';
 
@@ -49,6 +48,19 @@ function MapActionsRendererPure() {
 		[sendEvent, mapHash]
 	);
 
+	const onChangeHandler = React.useCallback(
+		(actionHash: string, coordinates?: LatLng, data?: OMEActionsData) => {
+			if (mapHash) {
+				sendEvent(MAP_EVENTS.change_action, mapHash, {
+					hash: actionHash,
+					...(coordinates && { coordinates }),
+					...(data && { data }),
+				});
+			}
+		},
+		[sendEvent, mapHash]
+	);
+
 	console.log(
 		Object.keys(map._events).reduce((acc, key) => {
 			return acc + map._events[key].length;
@@ -69,6 +81,7 @@ function MapActionsRendererPure() {
 						key={actionHash}
 						draggable={canDrag}
 						eventHandlers={eventHandlers(actionHash)}
+						onChangeHandler={onChangeHandler}
 					>
 						<ActionMenu action={action} />
 					</ActionElement>

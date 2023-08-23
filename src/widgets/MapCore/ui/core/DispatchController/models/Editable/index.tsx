@@ -1,4 +1,4 @@
-import { MAP_ACTION_TYPES } from 'entities/map-actions';
+import { MAP_ACTION_TYPES, PolygoneData } from 'entities/map-actions';
 import { LatLng, LatLngExpression, LeafletMouseEvent, Map } from 'leaflet';
 import React from 'react';
 import { Polygon, Polyline } from 'react-leaflet';

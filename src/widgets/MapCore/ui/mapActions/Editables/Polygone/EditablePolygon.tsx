@@ -1,13 +1,17 @@
+import { PolygoneData } from 'entities/map-actions';
 import { LatLng, LeafletEventHandlerFnMap, LeafletMouseEvent } from 'leaflet';
 import React, { useEffect } from 'react';
 import { CircleMarker, MarkerProps, Polygon, useMap } from 'react-leaflet';
+import { calcLatLngCenter } from 'shared/common/calcLatLngCenter';
 
 export function EditablePolygone({
 	coordinates,
 	children,
+	onChange,
 	...rest
 }: {
 	coordinates: LatLng[];
+	onChange: (coordinates?: LatLng, data?: PolygoneData) => void;
 } & React.PropsWithChildren &
 	Omit<MarkerProps, 'position'>) {
 	const [editing, setEditing] = React.useState(false);
@@ -30,6 +34,14 @@ export function EditablePolygone({
 			setCornerPoints([...coords]);
 		}
 	}, [coords, draggingInter]);
+
+	React.useEffect(() => {
+		if (!draggingCorner && !draggingInter) {
+			onChange(calcLatLngCenter(coords), {
+				coordinates: coords,
+			});
+		}
+	}, [coords, onChange, draggingCorner, draggingInter]);
 
 	const intermidiatePoints = React.useMemo(() => {
 		return interPoints.map((item, index) => {
