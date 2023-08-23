@@ -23,9 +23,8 @@ export function PolygoneController({
 	const mouseCoords = useThrottle(mousePosition, 10);
 
 	const sendEvent = useEmit();
-
-	const clickListener = React.useCallback(
-		(e: LeafletMouseEvent) => {
+	React.useEffect(() => {
+		const clickListener = (e: LeafletMouseEvent) => {
 			const thisCoordinates = e.latlng;
 
 			let sameCoords = false;
@@ -47,14 +46,11 @@ export function PolygoneController({
 					},
 				});
 
+				setCoordinates([]);
+				setMousePosition(null);
 				onEndCallback();
 			}
-		},
-		[mapHash, onEndCallback, coordinates, sendEvent]
-	);
-
-	React.useEffect(() => {
-		map.on('click', clickListener);
+		};
 
 		const onMove = (e: LeafletMouseEvent) => {
 			return setMousePosition(e.latlng);
@@ -66,11 +62,12 @@ export function PolygoneController({
 			map.off('mousemove', onMove);
 		}
 
+		map.on('click', clickListener);
 		return () => {
 			map.off('click', clickListener);
-			map.off('move', onMove);
+			map.off('mousemove', onMove);
 		};
-	}, [map, clickListener, editing]);
+	}, [map, editing, coordinates, mapHash, onEndCallback, sendEvent]);
 
 	const PolylineLatLng: LatLng[] | null = React.useMemo(() => {
 		if (editing && mouseCoords && coordinates[0]) {
@@ -83,5 +80,7 @@ export function PolygoneController({
 		return null;
 	}, [editing, mouseCoords, coordinates]);
 
-	return PolylineLatLng ? <Polygon positions={PolylineLatLng} /> : null;
+	return PolylineLatLng && editing ? (
+		<Polygon positions={PolylineLatLng} />
+	) : null;
 }

@@ -1,4 +1,3 @@
-import { useEventHandlers } from '@react-leaflet/core';
 import { LatLng, LeafletEventHandlerFnMap, LeafletMouseEvent } from 'leaflet';
 import React, { useEffect } from 'react';
 import { CircleMarker, MarkerProps, Polygon, useMap } from 'react-leaflet';
@@ -50,6 +49,7 @@ export function EditablePolygone({
 		});
 	}, [interPoints]);
 
+	// const interMouseMoveRef = React.useRef<>(null);
 	const interEventHandlers = React.useCallback(
 		(index: number) => ({
 			mousedown: () => {
@@ -64,18 +64,24 @@ export function EditablePolygone({
 					return [...newState];
 				});
 
-				map.on('mousemove', (ev: LeafletMouseEvent) => {
+				const onMouseMove = (ev: LeafletMouseEvent) => {
 					setCoords((state) => {
 						const newState = [...state];
 						newState[coordIndex] = ev.latlng;
 						return [...newState];
 					});
-				});
-				map.on('mouseup', () => {
+				};
+
+				const onMouseUp = () => {
 					map.dragging.enable();
 					setDraggingInter(false);
-					map.removeEventListener('mousemove');
-				});
+					map.removeEventListener('mousemove', onMouseMove);
+					map.removeEventListener('mouseup', onMouseUp);
+				};
+
+				// Remove event listeners on object stop dragging
+				map.on('mousemove', onMouseMove);
+				map.on('mouseup', onMouseUp);
 			},
 		}),
 		[map, interPoints]
@@ -83,7 +89,7 @@ export function EditablePolygone({
 
 	const intermidiateElements = React.useMemo(() => {
 		return intermidiatePoints.map((item, index) => {
-			const element = (
+			return (
 				<CircleMarker
 					key={`inter_${item.lat}${item.lng}`}
 					center={item}
@@ -95,42 +101,41 @@ export function EditablePolygone({
 					radius={5}
 				/>
 			);
-
-			return element;
 		});
 	}, [intermidiatePoints, interEventHandlers]);
 
 	const cornerEventHandlers = React.useCallback(
-		(index: number) => {
-			const onMouseMove = (ev: LeafletMouseEvent) => {
-				setCoords((state) => {
-					const newState = [...state];
-					newState[index] = ev.latlng;
-					return [...newState];
-				});
-			};
+		(index: number) => ({
+			mousedown: () => {
+				map.dragging.disable();
+				setDraggingCorner(true);
 
-			return {
-				mousedown: () => {
-					map.dragging.disable();
-					setDraggingCorner(true);
-					map.on('mousemove', onMouseMove);
-				},
-				mouseup: () => {
-					map.dragging.enable();
-					setDraggingCorner(false);
-					console.log('mouseup');
-					map.off('mousemove');
-				},
-				click: () => {
+				const onMouseMove = (ev: LeafletMouseEvent) => {
 					setCoords((state) => {
 						const newState = [...state];
-						newState.splice(index, 1);
+						newState[index] = ev.latlng;
 						return [...newState];
 					});
-				},
-			};
-		},
+				};
+
+				const onMouseUp = () => {
+					map.dragging.enable();
+					setDraggingCorner(false);
+					map.removeEventListener('mousemove', onMouseMove);
+					map.removeEventListener('mouseup', onMouseUp);
+				};
+
+				map.on('mouseup', onMouseUp);
+				map.on('mousemove', onMouseMove);
+			},
+			click: () => {
+				setCoords((state) => {
+					const newState = [...state];
+					newState.splice(index, 1);
+					return [...newState];
+				});
+			},
+		}),
 		[map]
 	);
 

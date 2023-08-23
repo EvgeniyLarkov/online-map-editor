@@ -7,6 +7,7 @@ import { LeafletEvent } from 'leaflet';
 import { useEmit } from 'widgets/MapCore/api';
 import { MapStore } from 'entities/map';
 import { MAP_EVENTS } from 'widgets/MapCore/api/types';
+import { useMap } from 'react-leaflet';
 import { GetMapActionByType } from '../mapActions/getMapActionByType';
 import { ActionMenu } from '../mapActions';
 
@@ -18,6 +19,8 @@ function MapActionsRendererPure() {
 		}),
 		shallow // TO-DO need function to prevent rerenders
 	);
+
+	const map = useMap();
 
 	const { mapHash } = MapStore((mapData) => ({
 		mapHash: mapData.hash,
@@ -44,6 +47,12 @@ function MapActionsRendererPure() {
 			},
 		}),
 		[sendEvent, mapHash]
+	);
+
+	console.log(
+		Object.keys(map._events).reduce((acc, key) => {
+			return acc + map._events[key].length;
+		}, 0)
 	);
 
 	return (
