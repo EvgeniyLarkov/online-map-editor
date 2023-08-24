@@ -11,6 +11,7 @@ import { OverlayMapLayout } from '../OverlayMapMenu';
 import { useMapCacheController } from './useMapCacheService';
 import { useMapJoinController } from './useMapJoinControllerReciever';
 import 'leaflet-editable';
+import 'leaflet-draw';
 
 function DisplayPosition({ map }: { map: Map }) {
 	const [position, setPosition] = React.useState(() => map.getCenter());

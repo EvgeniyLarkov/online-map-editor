@@ -85,6 +85,9 @@ const translation = {
 				},
 				description: 'Комментарий',
 				description_placeholder: 'Добавьте описание',
+				area: {
+					label: 'Площадь',
+				},
 			},
 			join: {
 				loading: 'Карта загружается',
@@ -161,6 +164,9 @@ const translation = {
 		templates: {
 			yes: 'Да',
 			no: 'Нет',
+			area: {
+				km2: '{{num}} км²',
+			},
 		},
 		chat,
 		profile,

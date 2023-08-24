@@ -7,16 +7,18 @@ import { calcLatLngCenter } from 'shared/common/calcLatLngCenter';
 export function EditablePolygone({
 	coordinates,
 	children,
+	discardEditing,
 	onChange,
 	...rest
 }: {
 	coordinates: LatLng[];
 	onChange: (coordinates?: LatLng, data?: PolygoneData) => void;
+	discardEditing: () => void;
 } & React.PropsWithChildren &
 	Omit<MarkerProps, 'position'>) {
-	const [editing, setEditing] = React.useState(false);
 	const [draggingInter, setDraggingInter] = React.useState(false);
 	const [draggingCorner, setDraggingCorner] = React.useState(false);
+	const [hasModifications, setHasModifications] = React.useState(false);
 
 	const [coords, setCoords] = React.useState<LatLng[]>([...coordinates]);
 	const [interPoints, setInterPoints] = React.useState<LatLng[]>([...coords]);
@@ -36,12 +38,12 @@ export function EditablePolygone({
 	}, [coords, draggingInter]);
 
 	React.useEffect(() => {
-		if (!draggingCorner && !draggingInter) {
+		if (!draggingCorner && !draggingInter && hasModifications) {
 			onChange(calcLatLngCenter(coords), {
 				coordinates: coords,
 			});
 		}
-	}, [coords, onChange, draggingCorner, draggingInter]);
+	}, [coords, onChange, draggingCorner, draggingInter, hasModifications]);
 
 	const intermidiatePoints = React.useMemo(() => {
 		return interPoints.map((item, index) => {
@@ -87,6 +89,7 @@ export function EditablePolygone({
 				const onMouseUp = () => {
 					map.dragging.enable();
 					setDraggingInter(false);
+					setHasModifications(true);
 					map.removeEventListener('mousemove', onMouseMove);
 					map.removeEventListener('mouseup', onMouseUp);
 				};
@@ -133,6 +136,7 @@ export function EditablePolygone({
 				const onMouseUp = () => {
 					map.dragging.enable();
 					setDraggingCorner(false);
+					setHasModifications(true);
 					map.removeEventListener('mousemove', onMouseMove);
 					map.removeEventListener('mouseup', onMouseUp);
 				};
@@ -146,6 +150,7 @@ export function EditablePolygone({
 					newState.splice(index, 1);
 					return [...newState];
 				});
+				setHasModifications(true);
 			},
 		}),
 		[map]
@@ -180,10 +185,10 @@ export function EditablePolygone({
 	const eventHandlers: LeafletEventHandlerFnMap = React.useMemo(
 		() => ({
 			click: () => {
-				setEditing((state) => !state);
+				discardEditing();
 			},
 		}),
-		[]
+		[discardEditing]
 	);
 
 	return (
@@ -191,12 +196,10 @@ export function EditablePolygone({
 			<Polygon positions={coords} {...rest} eventHandlers={eventHandlers}>
 				{children}
 			</Polygon>
-			{editing ? (
-				<>
-					{intermidiateElements}
-					{cornerElements}
-				</>
-			) : null}
+			<>
+				{intermidiateElements}
+				{cornerElements}
+			</>
 		</>
 	);
 }
